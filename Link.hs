@@ -12,8 +12,8 @@ newL city1 city2 quality = Lin city1 city2 quality
 
 connectsL :: City -> Link -> Bool   -- indica si esta ciudad es parte de este link
 
-connectsL 
-
+connectsL cit (Lin citL1 citL2 quality) = (citL1 == cit || citL2 == cit)
+ 
 linksL :: City -> City -> Link -> Bool -- indica si estas dos ciudades distintas estan conectadas mediante este link
 
 
