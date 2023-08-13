@@ -14,7 +14,10 @@ module Point ( Point, newP, difP)
 data Point = Poi Int Int deriving (Eq, Show)
 
 newP :: Int -> Int -> Point
+
+
 difP :: Point -> Point -> Float  -- distancia absoluta
+
 -----------------
 module City ( City, newC, nameC, distanceC )
    where
