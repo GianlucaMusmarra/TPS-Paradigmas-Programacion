@@ -2,6 +2,7 @@ import Point
 import City 
 import Quality
 import Link
+import Tunel
 -- DESPUES BORRAR COMENTARIOS
 
 -- Testeo modulo Point
@@ -27,12 +28,23 @@ demora = delayQ calidad -- Anda
 
 -- Testeo modulo Link
 puntoCiudadRandom = newP 3 3
-ciudadRandom = newC "corona" puntoCiudadRandom 
+ciudadRandom = newC "Hawaii" puntoCiudadRandom 
 
-linkGenerado = newL ciudad1 ciudad2 calidad
-esParte = connectsL ciudad1 linkGenerado
-noEsParte = connectsL ciudadRandom linkGenerado
+linkGenerado = newL ciudad1 ciudad2 calidad -- Anda
+esParte = connectsL ciudad1 linkGenerado -- Anda
+noEsParte = connectsL ciudadRandom linkGenerado -- Anda
 
-estanConectadas = linksL ciudad1 ciudad2 linkGenerado
-noEstanConectadas = linksL ciudad1 ciudadRandom linkGenerado
-sonIguales = linksL ciudad1 ciudad1 linkGenerado
+estanConectadas = linksL ciudad1 ciudad2 linkGenerado -- Anda
+noEstanConectadas = linksL ciudad1 ciudadRandom linkGenerado -- Anda
+sonIguales = linksL ciudad1 ciudad1 linkGenerado -- Anda
+capacidad = capacityL  linkGenerado -- Anda, pero chequear que esta bien implementada.
+
+-- Testeo modulo Tunel
+punto3 = newP 4 5
+ciudad3 = newC "Victoria" punto3
+calidad3 = newQ "B" 3 4.7
+
+linkGeneradoAuxiliar = newL ciudadRandom ciudad3 calidad
+
+
+TunelGenerado = newT [linkGenerado]
