@@ -15,6 +15,6 @@ connectsT city1 city2 (Tun links) = foldr ((||) . linksL city1 city2) False link
 
 usesT :: Link -> Tunel -> Bool  -- indica si este tunel atraviesa ese link
 usesT fLink (Tun links) = foldr (\link -> (||) (link == fLink)) False links
-   
+
 delayT :: Tunel -> Float -- la demora que sufre una conexion en este tunel
-delayT (Tun links) = foldr (\link acc -> delayL link) 0 links
+delayT (Tun links) = foldr (\link acc -> delayL link + acc) 0 links
