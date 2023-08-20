@@ -31,9 +31,15 @@ puntoCiudadRandom = newP 3 3
 ciudadRandom = newC "corona" puntoCiudadRandom 
 
 linkGenerado = newL ciudad1 ciudad2 calidad
+otroLinkGenerado = newL ciudad2 ciudad1 calidad
+conmutabilidadDeLinks = otroLinkGenerado == linkGenerado
 esParte = connectsL ciudad1 linkGenerado
 noEsParte = connectsL ciudadRandom linkGenerado
 
 estanConectadas = linksL ciudad1 ciudad2 linkGenerado
 noEstanConectadas = linksL ciudad1 ciudadRandom linkGenerado
 sonIguales = linksL ciudad1 ciudad1 linkGenerado
+
+-- Testeo modulo Tunel
+
+tunelGenerado = newT [linkGenerado, otroLinkGenerado, linkGenerado]
