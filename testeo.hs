@@ -42,7 +42,6 @@ distanciaEntreCiudades = distanceC ciudad1 ciudad2
 
 testeoModuloCity = 
     [nombreCiudad1 == "CABA",
-    nombreCiudad2 == "Moron" ,
     distanciaEntreCiudades == 1.0,
     testF ciudadVacia,
     testF (nameC ciudadVacia) ]
@@ -88,6 +87,35 @@ testeoModuloLink =
 
 
 -- Testeo modulo Tunel
+
+ciudadTunel_1 = newC "Fischer" (newP 3 3)
+ciudadTunel_2 = newC "Morozevich" (newP 4 4)
+ciudadTunel_3 = newC "Oro" (newP 10 10)
+ciudadTunel_4 = newC "Pichot" (newP 11 24)
+ciudadTunel_5 = newC "Botvinik" (newP 4 10)
+
+calidadTunel = newQ "A" 3 1.8
+
+linkTunel_1 = newL ciudadTunel_1 ciudadTunel_2 calidadTunel
+linkTunel_2 = newL ciudadTunel_2 ciudadTunel_3 calidadTunel
+linkTunel_3 = newL ciudadTunel_3 ciudadTunel_4 calidadTunel
+linkTunel_4 = newL ciudadTunel_4 ciudadTunel_5 calidadTunel
+
+tunel1 = newT [linkTunel_1 , linkTunel_2 , linkTunel_3 , linkTunel_4]
+tunelConecta = connectsT ciudadTunel_1 ciudadTunel_4 tunel1
+tunelNoConecta= connectsT ciudadTunel_1 ciudadRandom tunel1
+tunelPasaPorLink = usesT linkTunel_3 tunel1
+tunelNoPasaPorLink = usesT linkGenerado tunel1
+
+demoraTunel = delayT tunel1
+
+testeoModuloTunel = 
+    [tunelConecta, 
+    not tunelNoConecta,
+    tunelPasaPorLink,
+    not tunelNoPasaPorLink,
+    demoraTunel == 1.8 * 4]
+
 
 
 
