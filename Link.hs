@@ -12,8 +12,10 @@ connectsL :: City -> Link -> Bool   -- Indica si esta ciudad es parte de este li
 connectsL cityX (Lin cityL1 cityL2 _) = cityL1 == cityX || cityL2 == cityX
 
 linksL :: City -> City -> Link -> Bool -- Indica si estas dos ciudades distintas estan conectadas mediante este link
-linksL city1 city2 link  | city1 == city2 = error "Ingresaste dos ciudades iguales"
-                         | otherwise = connectsL city1 link && connectsL city2 link
+
+
+linksL city1 city2 link = if city1 == city2 then error "You entered two equal cities" 
+else connectsL city1 link && connectsL city2 link
 
 capacityL :: Link -> Int
 capacityL (Lin _ _ quality) = capacityQ quality --Testing add
