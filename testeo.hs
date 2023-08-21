@@ -52,14 +52,18 @@ calidad = newQ "A" 2 2.7 -- Anda
 capacidadTuneles = capacityQ calidad -- Anda
 demoraTuneles = delayQ calidad -- Anda
 
-calidadVacia = newQ "" 3 3.1
+calidadSinNombre = newQ "" 3 3.1
+calidadConTolNegativa = newQ "Deberia tirar error..." (-1) 6.2
+calidadConDelayNegativo = newQ "Deberia tirar error..." 6 (-2.99)
+
+
 
 testeoModuloQuality =
     [capacidadTuneles == 2,
     demoraTuneles == 2.7,
-    testF calidadVacia,
-    testF (capacityQ calidadVacia),
-    testF (delayQ calidadVacia)]
+    testF calidadSinNombre,
+    testF calidadConTolNegativa,
+    testF calidadConDelayNegativo]
 
 -- Testeo modulo Link
 puntoCiudadRandom = newP 3 3

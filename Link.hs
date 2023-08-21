@@ -14,7 +14,7 @@ connectsL cityX (Lin cityL1 cityL2 _) = cityL1 == cityX || cityL2 == cityX
 linksL :: City -> City -> Link -> Bool -- Indica si estas dos ciudades distintas estan conectadas mediante este link
 
 
-linksL city1 city2 link = if city1 == city2 then error "You entered two equal cities" 
+linksL city1 city2 link = if city1 == city2 then error "You entered two equal cities." 
 else connectsL city1 link && connectsL city2 link
 
 capacityL :: Link -> Int
