@@ -109,7 +109,7 @@ tunel1 = newT [linkTunel_1 , linkTunel_2 , linkTunel_3 , linkTunel_4]
 tunelNoConecta = connectsT ciudadTunel_1 ciudadTunel_4 tunel1 -- no deberia conectar
 tunelNoConecta2= connectsT ciudadTunel_1 ciudadRandom tunel1
 
-tunelSiconecta = connectsT ciudadTunel_1 ciudadTunel_5 tunel1
+tunelSiConecta = connectsT ciudadTunel_1 ciudadTunel_5 tunel1
 tunelPasaPorLink = usesT linkTunel_3 tunel1
 tunelNoPasaPorLink = usesT linkGenerado tunel1
 
@@ -118,6 +118,7 @@ demoraTunel = delayT tunel1
 testeoModuloTunel = 
     [not tunelNoConecta, 
     not tunelNoConecta2,
+    tunelSiConecta,
     tunelPasaPorLink,
     not tunelNoPasaPorLink,
     demoraTunel == 1.8 * 4]
