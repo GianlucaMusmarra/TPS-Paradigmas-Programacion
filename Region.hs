@@ -34,9 +34,9 @@ linkedR (Reg _ links _) city1 city2 =
    foldr (\link links -> links || linksL city1 city2 link) False links
 
 delayR :: Region -> City -> City -> Float -- dadas dos ciudades conectadas, indica la demora
-delayR (Reg cities links tunels) city1 cirty2 = 
+delayR (Reg cities links tunels) city1 city2 = delayT (getConnectingTunel tunels city1 city2)
    where 
-      getTunel (x:xs) city1 city2 | connectsT city1 city2 x = x
-                                  | otherwise = getTunel xs cirt1 city2
+      getConnectingTunel (x:xs) city1 city2 | connectsT city1 city2 x = x
+                                            | otherwise = getConnectingTunel xs city1 city2
 
 --availableCapacityForR :: Region -> City -> City -> Int -- indica la capacidad disponible entre dos ciudades
