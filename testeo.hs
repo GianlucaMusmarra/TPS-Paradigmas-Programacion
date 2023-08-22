@@ -124,5 +124,8 @@ testeoModuloTunel =
     demoraTunel == 1.8 * 4]
 
 
+-- countA target = foldr (\each fold -> if target == each then fold + 1 else fold) 0
+
+
 
 
