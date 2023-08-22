@@ -6,7 +6,9 @@ import System.IO.Unsafe
 data City = Cit String Point deriving (Eq, Show)
 
 newC :: String -> Point -> City
-newC name point = if null name then error "The name of the city can't be empty." else Cit name point
+
+newC name point | null name = error "The name of the city can't be empty."
+                | otherwise = Cit name point
 
 nameC :: City -> String
 nameC (Cit name _) = name
