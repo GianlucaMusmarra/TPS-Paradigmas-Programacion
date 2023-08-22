@@ -4,7 +4,7 @@ module Quality ( Quality, newQ, capacityQ, delayQ )
 data Quality = Qua String Int Float deriving (Eq, Show)
 
 newQ :: String -> Int -> Float -> Quality
-newQ name toleration delay | null name = error "The name of the quality can't be empty."
+newQ name toleration delay | null name = error "Quality name can't be empty."
                      | toleration < 0 =  error "Tunnels toleration must be grater or equal than zero."
                      | delay < 0 = error "Delay per unit of distance must be grater or equal than zero."
                      | otherwise = Qua name toleration delay
