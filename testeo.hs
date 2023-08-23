@@ -5,6 +5,7 @@ import Link
 import Tunel
 import Control.Exception
 import System.IO.Unsafe
+import Region (newR, foundR)
 
 testF :: Show a => a -> Bool
 testF action = unsafePerformIO $ do
@@ -124,8 +125,10 @@ testeoModuloTunel =
     demoraTunel == 1.8 * 4]
 
 
--- countA target = foldr (\each fold -> if target == each then fold + 1 else fold) 0
+-- Testeo Modulo Region
+testingRegion = newR 
+cityRegion1 = newC "City 1" (newP 1 2)
 
-
+testinRegionWithCityAdded = foundR testingRegion cityRegion1
 
 

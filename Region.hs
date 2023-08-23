@@ -19,7 +19,7 @@ linkR (Reg cities links tunels) city1 city2 quality = Reg cities (newL city1 cit
 tunelR :: Region -> [ City ] -> Region -- genera una comunicación entre dos ciudades distintas de la región
 tunelR (Reg cities links tunels) cityList
   | all (`elem` cities) cityList && allCitiesLinked = Reg cities links (newTunel:tunels)
-  | otherwise = error "Cities not liked or unordered"
+  | otherwise = error "Cities not liked or unordered."
   where
     allCitiesLinked = all (\(c1, c2) -> any (\l -> linksL c1 c2 l) links) (zip cityList (tail cityList))
     newLinks = [l | (c1, c2) <- zip cityList (tail cityList), l <- links, linksL c1 c2 l]
