@@ -172,3 +172,6 @@ length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = **
 -}
 
 creatingCommunication = tunelR testingRegionTwoCitiesAdded [cityRegion1,cityRegion2]
+
+
+-- tunelR no pasa las pruebas.
