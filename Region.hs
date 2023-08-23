@@ -39,4 +39,9 @@ delayR (Reg cities links tunels) city1 city2 = delayT (getConnectingTunel tunels
       getConnectingTunel (x:xs) city1 city2 | connectsT city1 city2 x = x
                                             | otherwise = getConnectingTunel xs city1 city2
 
---availableCapacityForR :: Region -> City -> City -> Int -- indica la capacidad disponible entre dos ciudades
+availableCapacityForR (Reg _ links _) city1 city2 = availableTunelsList links city1 city2
+   where
+   availableTunelsList links city1 city2 = foldr (\link -> (:).linkCount) 
+   linkCount links city1 city2 = foldr (\links fold -> if linksL city1 city2 links then fold + 1 else fold) 0
+-- ir link por link viendo en cuanto tuneles esta, guardarlo en una lista
+-- devolver el int mas chico de la lista
