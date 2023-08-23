@@ -6,7 +6,8 @@ import Quality
 data Link = Lin City City Quality deriving (Eq, Show)
 
 newL :: City -> City -> Quality -> Link -- Genera un link entre dos ciudades distintas
-newL = Lin
+newL city1 city2 qua | city1 == city2 = error "You can't create a link between the same city."
+                     | otherwise = Lin city1 city2 qua
 
 connectsL :: City -> Link -> Bool   -- Indica si esta ciudad es parte de este link
 connectsL cityX (Lin cityL1 cityL2 _) = cityL1 == cityX || cityL2 == cityX

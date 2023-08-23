@@ -5,16 +5,28 @@ import City
 import Quality
 import Link
 import Tunel
+import Point
 
-data Region = Reg [City] [Link] [Tunel]
+data Region = Reg [City] [Link] [Tunel] 
 newR :: Region 
 newR = Reg [] [] []
 
 foundR :: Region -> City -> Region -- agrega una nueva ciudad a la región
 foundR (Reg cities link tunel) city = Reg (city:cities) link tunel
 
+verificatesCitiesAddedCorrectly :: Region -> [City]
+verificatesCitiesAddedCorrectly (Reg city _ _) = city
+
 linkR :: Region -> City -> City -> Quality -> Region -- enlaza dos ciudades de la región con un enlace de la calidad indicada
-linkR (Reg cities links tunels) city1 city2 quality = Reg cities (newL city1 city2 quality:links) tunels
+
+
+linkR (Reg cities links tunnels) city1 city2 quality 
+ | notElem city1 cities || notElem city2 cities = error "At least one of the cities entered is not part of the region."
+ | otherwise = Reg cities (newL city1 city2 quality:links) tunnels
+
+verificatesLinkRWorksCorrectly (Reg _ links _) = links
+
+
 
 tunelR :: Region -> [ City ] -> Region -- genera una comunicación entre dos ciudades distintas de la región
 tunelR (Reg cities links tunels) cityList

@@ -5,7 +5,7 @@ import Link
 import Tunel
 import Control.Exception
 import System.IO.Unsafe
-import Region (newR, foundR)
+import Region 
 
 testF :: Show a => a -> Bool
 testF action = unsafePerformIO $ do
@@ -22,113 +22,150 @@ testF action = unsafePerformIO $ do
 -- DESPUES BORRAR COMENTARIOS
 
 -- Testeo modulo Point
-punto1 = newP 1 2 
-punto2 = newP 2 2 
-distancia_p1_p2 = difP punto1 punto2 
+point1 = newP 1 2 
+point2 = newP 2 2 
+distancia_p1_p2 = difP point1 point2 
 
 testeoModuloPoint = [distancia_p1_p2 == 1.0]
 
 -- Testeo modulo City
 
-ciudad1 = newC "CABA" punto1 
-ciudad2 = newC "Moron" punto2 
+cityC1 = newC "CABA" point1 
+cityC2 = newC "Moron" point2 
 
-ciudadSinNombre = newC "" punto1
+cityWithNoName = newC "" point1
 
-nombreCiudad1 = nameC ciudad1 
-nombreCiudad2 = nameC ciudad2
+nameCityC1 = nameC cityC1 
 
-
-distanciaEntreCiudades = distanceC ciudad1 ciudad2
+distance_cityC1_cityC2 = distanceC cityC1 cityC2
 
 testeoModuloCity = 
-    [nombreCiudad1 == "CABA",
-    distanciaEntreCiudades == 1.0,
-    testF ciudadSinNombre,
-    testF (nameC ciudadSinNombre) ]
+    [nameCityC1 == "CABA",
+    distance_cityC1_cityC2 == 1.0,
+    testF cityWithNoName,
+    testF (nameC cityWithNoName) ]
 
 -- Testeo modulo Quality
 
-calidad = newQ "A" 2 2.7 -- Anda
-capacidadTuneles = capacityQ calidad -- Anda
-demoraTuneles = delayQ calidad -- Anda
+qualityForTests = newQ "A" 2 2.7 
+qualityCapacity = capacityQ qualityForTests 
+qualityDelay = delayQ qualityForTests 
 
-calidadSinNombre = newQ "" 3 3.1
-calidadConTolNegativa = newQ "Deberia tirar error..." (-1) 6.2
-calidadConDelayNegativo = newQ "Deberia tirar error..." 6 (-2.99)
+qualityWithNoName = newQ "" 3 3.1
+qualityWithNegativeTol = newQ "ghost..." (-1) 6.2
+qualityWithNegativeDelay = newQ "ghost..." 6 (-2.99)
 
 
 
 testeoModuloQuality =
-    [capacidadTuneles == 2,
-    demoraTuneles == 2.7,
-    testF calidadSinNombre,
-    testF calidadConTolNegativa,
-    testF calidadConDelayNegativo]
+    [qualityCapacity == 2,
+    qualityDelay == 2.7,
+    testF qualityWithNoName,
+    testF qualityWithNegativeTol,
+    testF qualityWithNegativeDelay]
 
 -- Testeo modulo Link
-puntoCiudadRandom = newP 3 3
-ciudadRandom = newC "Ciudad fuera del mapa" puntoCiudadRandom 
+pointRandomCity = newP 300 300
+randomCity = newC "Farland!" pointRandomCity 
 
-linkGenerado = newL ciudad1 ciudad2 calidad
-capacidadLinkGenerado = capacityL linkGenerado
-demoraLinkGenerado = delayL linkGenerado
+linkBetweenC1andC2 = newL cityC1 cityC2 qualityForTests
+linkBetweenSameCity = newL cityC1 cityC1 qualityForTests
+capacityLinkC1C2 = capacityL linkBetweenC1andC2
+delayLinkC1C2 = delayL linkBetweenC1andC2
 
-esParte = connectsL ciudad1 linkGenerado
-noEsParte = connectsL ciudadRandom linkGenerado
+cityPartOfLink = connectsL cityC1 linkBetweenC1andC2
+cityNotPartOfLink = connectsL randomCity linkBetweenC1andC2
 
-estanConectadas = linksL ciudad1 ciudad2 linkGenerado
-noEstanConectadas = linksL ciudad1 ciudadRandom linkGenerado
-sonIguales = linksL ciudad1 ciudad1 linkGenerado
+citiesConnectedByLink = linksL cityC1 cityC2 linkBetweenC1andC2
+citiesNotConnectedByLink = linksL cityC1 randomCity linkBetweenC1andC2
+equalCities = linksL cityC1 cityC1 linkBetweenC1andC2
 
 testeoModuloLink =
-    [capacidadLinkGenerado == 2,
-    demoraLinkGenerado == 2.7,
-    esParte,
-    not noEsParte,
-    estanConectadas,
-    not noEstanConectadas,
-    testF sonIguales]
+    [testF linkBetweenSameCity,
+    capacityLinkC1C2 == 2,
+    delayLinkC1C2 == 2.7,
+    cityPartOfLink,
+    not cityNotPartOfLink,
+    citiesConnectedByLink,
+    not citiesNotConnectedByLink,
+    testF equalCities]
 
 
 -- Testeo modulo Tunel
 
-ciudadTunel_1 = newC "Fischer" (newP 3 3)
-ciudadTunel_2 = newC "Morozevich" (newP 4 4)
-ciudadTunel_3 = newC "Oro" (newP 10 10)
-ciudadTunel_4 = newC "Pichot" (newP 11 24)
-ciudadTunel_5 = newC "Botvinik" (newP 4 10)
+cityTestTunnel_1 = newC "Fischer" (newP 3 3)
+cityTestTunnel_2 = newC "Morozevich" (newP 4 4)
+cityTestTunnel_3 = newC "Oro" (newP 10 10)
+cityTestTunnel_4 = newC "Pichot" (newP 11 24)
+cityTestTunnel_5 = newC "Botvinik" (newP 4 10)
 
-calidadTunel = newQ "A" 3 1.8
+qualityTunnel = newQ "A" 3 1.8
 
-linkTunel_1 = newL ciudadTunel_1 ciudadTunel_2 calidadTunel
-linkTunel_2 = newL ciudadTunel_2 ciudadTunel_3 calidadTunel
-linkTunel_3 = newL ciudadTunel_3 ciudadTunel_4 calidadTunel
-linkTunel_4 = newL ciudadTunel_4 ciudadTunel_5 calidadTunel
+linkTunel_1 = newL cityTestTunnel_1 cityTestTunnel_2 qualityTunnel
+linkTunel_2 = newL cityTestTunnel_2 cityTestTunnel_3 qualityTunnel
+linkTunel_3 = newL cityTestTunnel_3 cityTestTunnel_4 qualityTunnel
+linkTunel_4 = newL cityTestTunnel_4 cityTestTunnel_5 qualityTunnel
 
-tunel1 = newT [linkTunel_1 , linkTunel_2 , linkTunel_3 , linkTunel_4]
-tunelNoConecta = connectsT ciudadTunel_1 ciudadTunel_4 tunel1 -- no deberia conectar
-tunelNoConecta2= connectsT ciudadTunel_1 ciudadRandom tunel1
+tunnelcreated1 = newT [linkTunel_1 , linkTunel_2 , linkTunel_3 , linkTunel_4]
+tunelNotConnects = connectsT cityTestTunnel_1 cityTestTunnel_4 tunnelcreated1 
+tunelNotConnects2= connectsT cityTestTunnel_1 randomCity tunnelcreated1
 
-tunelSiConecta = connectsT ciudadTunel_1 ciudadTunel_5 tunel1
-tunelPasaPorLink = usesT linkTunel_3 tunel1
-tunelNoPasaPorLink = usesT linkGenerado tunel1
+tunelConnects = connectsT cityTestTunnel_1 cityTestTunnel_5 tunnelcreated1
+tunnelGoesThroughLink = usesT linkTunel_3 tunnelcreated1
+tunnelDoesntGoesThroughLink = usesT linkBetweenC1andC2 tunnelcreated1
 
-demoraTunel = delayT tunel1
+delayTunnel = delayT tunnelcreated1
 
 testeoModuloTunel = 
-    [not tunelNoConecta, 
-    not tunelNoConecta2,
-    tunelSiConecta,
-    tunelPasaPorLink,
-    not tunelNoPasaPorLink,
-    demoraTunel == 1.8 * 4]
+    [not tunelNotConnects, 
+    not tunelNotConnects2,
+    tunelConnects,
+    tunnelGoesThroughLink,
+    not tunnelDoesntGoesThroughLink,
+    delayTunnel == 1.8 * 4]
 
 
 -- Testeo Modulo Region
 testingRegion = newR 
 cityRegion1 = newC "City 1" (newP 1 2)
+cityRegion2 = newC "City 2" (newP 2 3)
 
-testinRegionWithCityAdded = foundR testingRegion cityRegion1
+qualityRegion = newQ "B+" 3 3.2
+
+cityNotInRegion1 = newC "Farland!" (newP 1000 1000)
+cityNotInRegion2 = newC "Farlands!!!" (newP 11000 11000)
+
+
+testingRegionOneCityAdded = foundR testingRegion cityRegion1
+testingRegionTwoCitiesAdded = foundR testingRegionOneCityAdded cityRegion2
+
+connectionTestingRegSuccessful = linkR testingRegionTwoCitiesAdded cityRegion1 cityRegion2  qualityRegion
+connectionTestingRegNotSuccessful1 = linkR testingRegionTwoCitiesAdded cityNotInRegion1 cityRegion2 qualityRegion
+connectionTestingRegNotSuccessful2 = linkR testingRegionTwoCitiesAdded cityRegion1 cityNotInRegion2 qualityRegion
+connectionTestingRegNotSuccessful3 = linkR testingRegionTwoCitiesAdded cityNotInRegion1 cityNotInRegion2 qualityRegion
+
+{-
+As data type region doestn't have a show instance, to verify that functions worked as expected, testing was
+made in the terminal, with the help of two auxiliar functions created in the region module. 
+Each of the testing instances seen in this file passed correctly the tests: 
+
+- testingRegionOneCityAdded = foundR testingRegion cityRegion1
+length (verificatesCitiesAddedCorrectly(testingRegionOneCityAdded)) = 1
+
+- testingRegionTwoCitiesAdded = foundR testingRegionOneCityAdded cityRegion2
+length (verificatesCitiesAddedCorrectly(testingRegionTwoCitiesAdded)) = 2
+
+- connectionTestingRegSuccessful = linkR testingRegionTwoCitiesAdded cityRegion1 cityRegion2  qualityRegion
+length (verificatesLinkRWorksCorrectly(connectionTestingRegSuccessful)) = 1
+
+- connectionTestingRegNotSuccessful1 = linkR testingRegionTwoCitiesAdded cityNotInRegion1 cityRegion2 qualityRegion
+length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful1)) = *** Exception
+
+- connectionTestingRegNotSuccessful2 = linkR testingRegionTwoCitiesAdded cityRegion1 cityNotInRegion2 qualityRegion
+length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = *** Exception 
+
+- connectionTestingRegNotSuccessful3 = linkR testingRegionTwoCitiesAdded cityNotInRegion1 cityNotInRegion2 qualityRegion
+length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = *** Exception
+-}
 
 
