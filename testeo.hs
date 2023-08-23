@@ -24,9 +24,9 @@ testF action = unsafePerformIO $ do
 -- Testeo modulo Point
 point1 = newP 1 2 
 point2 = newP 2 2 
-distancia_p1_p2 = difP point1 point2 
+distance_p1_p2 = difP point1 point2 
 
-testeoModuloPoint = [distancia_p1_p2 == 1.0]
+testeoModuloPoint = [distance_p1_p2 == 1.0]
 
 -- Testeo modulo City
 
@@ -65,8 +65,8 @@ testeoModuloQuality =
     testF qualityWithNegativeDelay]
 
 -- Testeo modulo Link
-pointRandomCity = newP 300 300
-randomCity = newC "Farland!" pointRandomCity 
+pointRandomCity = newP 3000 3000
+randomCity = newC "Farlands!" pointRandomCity 
 
 linkBetweenC1andC2 = newL cityC1 cityC2 qualityForTests
 linkBetweenSameCity = newL cityC1 cityC1 qualityForTests
@@ -107,10 +107,12 @@ linkTunel_3 = newL cityTestTunnel_3 cityTestTunnel_4 qualityTunnel
 linkTunel_4 = newL cityTestTunnel_4 cityTestTunnel_5 qualityTunnel
 
 tunnelcreated1 = newT [linkTunel_1 , linkTunel_2 , linkTunel_3 , linkTunel_4]
+tunelConnects = connectsT cityTestTunnel_1 cityTestTunnel_5 tunnelcreated1
+
 tunelNotConnects = connectsT cityTestTunnel_1 cityTestTunnel_4 tunnelcreated1 
 tunelNotConnects2= connectsT cityTestTunnel_1 randomCity tunnelcreated1
 
-tunelConnects = connectsT cityTestTunnel_1 cityTestTunnel_5 tunnelcreated1
+
 tunnelGoesThroughLink = usesT linkTunel_3 tunnelcreated1
 tunnelDoesntGoesThroughLink = usesT linkBetweenC1andC2 tunnelcreated1
 
@@ -129,10 +131,11 @@ testeoModuloTunel =
 testingRegion = newR 
 cityRegion1 = newC "City 1" (newP 1 2)
 cityRegion2 = newC "City 2" (newP 2 3)
+cityRegion3 = newC "City 3" (newP 2 5)
 
 qualityRegion = newQ "B+" 3 3.2
 
-cityNotInRegion1 = newC "Farland!" (newP 1000 1000)
+cityNotInRegion1 = newC "Farland!s" (newP 19000 19000)
 cityNotInRegion2 = newC "Farlands!!!" (newP 11000 11000)
 
 
@@ -168,4 +171,4 @@ length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = **
 length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = *** Exception
 -}
 
-
+creatingCommunication = tunelR testingRegionTwoCitiesAdded [cityRegion1,cityRegion2]

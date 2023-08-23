@@ -37,6 +37,9 @@ tunelR (Reg cities links tunels) cityList
     newLinks = [l | (c1, c2) <- zip cityList (tail cityList), l <- links, linksL c1 c2 l]
     newTunel = newT newLinks
 
+verificatesTunelRWorksCorrectly (Reg _ _ tunnel ) = tunnel
+
+
 connectedR :: Region -> City -> City -> Bool -- indica si estas dos ciudades estan conectadas por un tunel
 connectedR (Reg cities links tunels) city1 city2 =
     foldr (\tunel tunels -> tunels || connectsT city1 city2 tunel) False tunels
