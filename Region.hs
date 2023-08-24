@@ -29,11 +29,13 @@ verificatesLinkRWorksCorrectly (Reg _ links _) = links
 
 
 tunelR :: Region -> [ City ] -> Region -- genera una comunicación entre dos ciudades distintas de la región
-tunelR (Reg cities links tunels) cityList
+tunelR r@(Reg cities links tunels) cityList
+  | anyLinkFull = error"Links needed are full"
   | all (`elem` cities) cityList && allCitiesLinked = Reg cities links (newTunel:tunels)
   | otherwise = error "Cities not liked or unordered."
   where
     allCitiesLinked = all (\(c1, c2) -> any (\l -> linksL c1 c2 l) links) (zip cityList (tail cityList))
+    anyLinkFull = all (\(c1, c2) -> availableCapacityForR r c1 c2 <= 0) (zip cityList (tail cityList))
     newLinks = [l | (c1, c2) <- zip cityList (tail cityList), l <- links, linksL c1 c2 l]
     newTunel = newT newLinks
 
