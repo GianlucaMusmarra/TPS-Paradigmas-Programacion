@@ -19,7 +19,6 @@ verificatesCitiesAddedCorrectly (Reg city _ _) = city
 
 linkR :: Region -> City -> City -> Quality -> Region -- enlaza dos ciudades de la región con un enlace de la calidad indicada
 
-
 linkR (Reg cities links tunnels) city1 city2 quality 
  | notElem city1 cities || notElem city2 cities = error "At least one of the cities entered is not part of the region."
  | otherwise = Reg cities (newL city1 city2 quality:links) tunnels
@@ -51,13 +50,13 @@ delayR (Reg cities links tunels) city1 city2 = delayT (getConnectingTunel tunels
 
 availableCapacityForR :: Region -> City -> City -> Int
 availableCapacityForR (Reg cities links tunels) city1 city2 
-   | city1 `notElem` cities || city2 `notElem` cities = error "Those cities don't exist in this region" 
+   | city1 `notElem` cities || city2 `notElem` cities = error "Those cities don't exist in this region." 
    | otherwise = capacityL link - usedCapacity link tunels
    where
       link = checkCitiesLink links city1 city2
       usedCapacity link tunels = count True (map(usesT link)tunels)
       count target = foldr (\link fold -> if target == link then fold +1 else fold) 0
-      checkCitiesLink links city1 city2 | null links = error "Link could not be found"
+      checkCitiesLink links city1 city2 | null links = error "Link could not be found."
                                         | linksL city1 city2 (head links) = head links
                                         | otherwise = checkCitiesLink (tail links) city1 city2
    
