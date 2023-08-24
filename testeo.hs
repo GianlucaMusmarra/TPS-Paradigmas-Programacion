@@ -171,16 +171,13 @@ length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = **
 length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = *** Exception
 -}
 
-testRegion2 = newR
+testRegion = newR
 
-testRegion2_1 = foundR testRegion2 cityRegion1
-testRegion2_2 = foundR testRegion2_1 cityRegion2 
-testRegion2_3 = foundR testRegion2_2 cityRegion3
+citiedTestRegion = foundR (foundR (foundR testRegion cityRegion3) cityRegion2) cityRegion1
 
-testRegion2_4 = linkR testRegion2_3 cityRegion1 cityRegion2 qualityRegion
-testRegion2_5 = linkR testRegion2_4 cityRegion2 cityRegion3 qualityRegion
+linkedTestRegion = linkR (linkR citiedTestRegion cityRegion2 cityRegion3 qualityRegion) cityRegion1 cityRegion2 qualityRegion
 
-testRegion2_6 = tunelR testRegion2_5 [cityRegion1,cityRegion3]
+tuneledTestRegion = tunelR linkedTestRegion [cityRegion1, cityRegion2, cityRegion3] 
 
-theyAreConnected = connectedR testRegion2_6 cityRegion1 cityRegion3
-theyAreNotConnected = connectedR testRegion2_6 cityRegion1 cityRegion2
+theyAreConnected = connectedR tuneledTestRegion cityRegion1 cityRegion3
+theyAreNotConnected = connectedR tuneledTestRegion cityRegion1 cityRegion2
