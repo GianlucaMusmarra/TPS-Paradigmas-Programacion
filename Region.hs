@@ -1,4 +1,4 @@
-module Region ( Region, newR, foundR, linkR, tunelR, connectedR, linkedR)
+module Region ( Region, newR, foundR, linkR, tunelR, connectedR, linkedR, delayR, availableCapacityForR)
    where
 
 import City
@@ -24,6 +24,7 @@ linkR (Reg cities links tunnels) city1 city2 quality
  | otherwise = Reg cities (newL city1 city2 quality:links) tunnels
 
 
+verificatesLinkRWorksCorrectly :: Region -> [Link]
 verificatesLinkRWorksCorrectly (Reg _ links _) = links
 
 

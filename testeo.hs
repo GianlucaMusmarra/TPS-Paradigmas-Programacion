@@ -3,9 +3,10 @@ import City
 import Quality
 import Link
 import Tunel
+import Region
 import Control.Exception
 import System.IO.Unsafe
-import Region 
+ 
 
 testF :: Show a => a -> Bool
 testF action = unsafePerformIO $ do
@@ -177,7 +178,32 @@ citiedTestRegion = foundR (foundR (foundR testRegion cityRegion3) cityRegion2) c
 
 linkedTestRegion = linkR (linkR citiedTestRegion cityRegion2 cityRegion3 qualityRegion) cityRegion1 cityRegion2 qualityRegion
 
-tuneledTestRegion = tunelR linkedTestRegion [cityRegion1, cityRegion2, cityRegion3] 
+tunnelTestRegion = tunelR linkedTestRegion [cityRegion1, cityRegion2, cityRegion3] 
 
-theyAreConnected = connectedR tuneledTestRegion cityRegion1 cityRegion3
-theyAreNotConnected = connectedR tuneledTestRegion cityRegion1 cityRegion2
+theyAreConnected = connectedR tunnelTestRegion cityRegion1 cityRegion3
+theyAreNotConnected = connectedR tunnelTestRegion cityRegion1 cityRegion2
+theyAreNotConnected2 = connectedR tunnelTestRegion randomCity cityRegion1 
+
+theyAreLinked = linkedR tunnelTestRegion cityRegion1 cityRegion2
+theyAreAlsoLinked = linkedR tunnelTestRegion cityRegion2 cityRegion3
+theyAreNotLinked = linkedR tunnelTestRegion cityRegion1 cityRegion3
+
+delayConnectedCities = delayR tunnelTestRegion cityRegion1 cityRegion3 
+delayBetweenNotConnecedCities = delayR tunnelTestRegion cityRegion1 cityRegion2
+
+availableCapacity = availableCapacityForR tunnelTestRegion cityRegion1 cityRegion2
+availableCapacity2 = availableCapacityForR tunnelTestRegion cityRegion2 cityRegion3
+availableCapacityButLinkDoesntExists = availableCapacityForR tunnelTestRegion cityRegion1 cityRegion3
+
+testeoModuloRegion = 
+    [theyAreConnected,
+    not theyAreNotConnected,
+    not theyAreNotConnected2,
+    theyAreLinked,
+    theyAreAlsoLinked,
+    not theyAreNotLinked,
+    delayConnectedCities == 3.2 * 2,
+    testF delayBetweenNotConnecedCities,
+    availableCapacity == 2, 
+    availableCapacity2 == 2,
+    testF availableCapacityButLinkDoesntExists]
