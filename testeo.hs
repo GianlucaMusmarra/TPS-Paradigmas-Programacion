@@ -175,3 +175,6 @@ creatingCommunication = tunelR testingRegionTwoCitiesAdded [cityRegion1,cityRegi
 
 
 -- tunelR no pasa las pruebas.
+
+testingRegionThreeCitiesAdded = foundR testingRegionTwoCitiesAdded cityRegion3
+

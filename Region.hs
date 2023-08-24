@@ -43,6 +43,8 @@ verificatesTunelRWorksCorrectly (Reg _ _ tunnel ) = tunnel
 connectedR :: Region -> City -> City -> Bool -- indica si estas dos ciudades estan conectadas por un tunel
 connectedR (Reg cities links tunels) city1 city2 =
     foldr (\tunel tunels -> tunels || connectsT city1 city2 tunel) False tunels
+
+
     
 linkedR :: Region -> City -> City -> Bool -- indica si estas dos ciudades estan enlazadas
 linkedR (Reg _ links _) city1 city2 = 
