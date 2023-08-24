@@ -171,7 +171,7 @@ length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = **
 length (verificatesLinkRWorksCorrectly(connectionTestingRegNotSuccessful2)) = *** Exception
 -}
 
-creatingCommunication = tunelR testingRegionTwoCitiesAdded [cityRegion1,cityRegion2]
+creatingCommunication = tunelR connectionTestingRegSuccessful [cityRegion1,cityRegion2]
 
 
 -- tunelR no pasa las pruebas.
