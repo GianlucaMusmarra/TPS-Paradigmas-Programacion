@@ -23,6 +23,10 @@ linkR (Reg cities links tunnels) city1 city2 quality
  | notElem city1 cities || notElem city2 cities = error "At least one of the cities entered is not part of the region."
  | otherwise = Reg cities (newL city1 city2 quality:links) tunnels
 
+
+verificatesLinkRWorksCorrectly (Reg _ links _) = links
+
+
 tunelR :: Region -> [ City ] -> Region -- genera una comunicación entre dos ciudades distintas de la región
 tunelR (Reg cities links tunels) cityList
   | all (`elem` cities) cityList && allCitiesLinked = Reg cities links (newTunel:tunels)
