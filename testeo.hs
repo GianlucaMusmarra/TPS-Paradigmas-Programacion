@@ -135,6 +135,7 @@ cityRegion2 = newC "City 2" (newP 2 3)
 cityRegion3 = newC "City 3" (newP 2 5)
 
 qualityRegion = newQ "B+" 3 3.2
+qualityRegionNoCapacity = newQ "B+" 0 3.2
 
 cityNotInRegion1 = newC "Farland!s" (newP 19000 19000)
 cityNotInRegion2 = newC "Farlands!!!" (newP 11000 11000)
@@ -194,12 +195,11 @@ delayBetweenNotConnecedCities = delayR tunnelTestRegion cityRegion1 cityRegion2
 availableCapacity = availableCapacityForR tunnelTestRegion cityRegion1 cityRegion2
 availableCapacity2 = availableCapacityForR tunnelTestRegion cityRegion2 cityRegion3
 
-
-
 availableCapacityButLinkDoesntExists = availableCapacityForR tunnelTestRegion cityRegion1 cityRegion3
 
+linkedTestRegionNoCapacity = linkR (linkR citiedTestRegion cityRegion2 cityRegion3 qualityRegionNoCapacity) cityRegion1 cityRegion2 qualityRegionNoCapacity
 
-
+tunnelTestRegionNoCapacity = tunelR linkedTestRegionNoCapacity [cityRegion1, cityRegion2, cityRegion3] 
 
 
 testeoModuloRegion = 
