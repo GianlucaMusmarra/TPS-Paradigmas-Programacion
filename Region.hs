@@ -12,7 +12,7 @@ newR :: Region
 newR = Reg [] [] []
 
 foundR :: Region -> City -> Region -- agrega una nueva ciudad a la región
-foundR (Reg cities link tunel) city = Reg (city:cities) link tunel
+foundR (Reg cities link tunnel) city = Reg (city:cities) link tunnel
 
 verificatesCitiesAddedCorrectly :: Region -> [City]
 verificatesCitiesAddedCorrectly (Reg city _ _) = city
@@ -29,9 +29,9 @@ verificatesLinkRWorksCorrectly (Reg _ links _) = links
 
 
 tunelR :: Region -> [ City ] -> Region -- genera una comunicación entre dos ciudades distintas de la región
-tunelR r@(Reg cities links tunels) cityList
+tunelR r@(Reg cities links tunnels) cityList
   | anyLinkFull = error"Links needed are full"
-  | all (`elem` cities) cityList && allCitiesLinked = Reg cities links (newTunel:tunels)
+  | all (`elem` cities) cityList && allCitiesLinked = Reg cities links (newTunel:tunnels)
   | otherwise = error "Cities not liked or unordered."
   where
     allCitiesLinked = all (\(c1, c2) -> any (\l -> linksL c1 c2 l) links) (zip cityList (tail cityList))

@@ -193,7 +193,14 @@ delayBetweenNotConnecedCities = delayR tunnelTestRegion cityRegion1 cityRegion2
 
 availableCapacity = availableCapacityForR tunnelTestRegion cityRegion1 cityRegion2
 availableCapacity2 = availableCapacityForR tunnelTestRegion cityRegion2 cityRegion3
+
+
+
 availableCapacityButLinkDoesntExists = availableCapacityForR tunnelTestRegion cityRegion1 cityRegion3
+
+
+
+
 
 testeoModuloRegion = 
     [theyAreConnected,
