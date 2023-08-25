@@ -199,7 +199,7 @@ availableCapacityButLinkDoesntExists = availableCapacityForR tunnelTestRegion ci
 
 linkedTestRegionNoCapacity = linkR (linkR citiedTestRegion cityRegion2 cityRegion3 qualityRegionNoCapacity) cityRegion1 cityRegion2 qualityRegionNoCapacity
 
-tunnelTestRegionNoCapacity = tunelR linkedTestRegionNoCapacity [cityRegion1, cityRegion2, cityRegion3] 
+tunnelTestRegionExceedsCapacity = tunelR linkedTestRegionNoCapacity [cityRegion1, cityRegion2, cityRegion3] 
 
 
 testeoModuloRegion = 
@@ -213,4 +213,5 @@ testeoModuloRegion =
     testF delayBetweenNotConnecedCities,
     availableCapacity == 2, 
     availableCapacity2 == 2,
-    testF availableCapacityButLinkDoesntExists]
+    testF availableCapacityButLinkDoesntExists,
+    testF tunnelTestRegionExceedsCapacity]
