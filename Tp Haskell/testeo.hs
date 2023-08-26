@@ -20,16 +20,14 @@ testF action = unsafePerformIO $ do
 
 
 
--- DESPUES BORRAR COMENTARIOS
 
--- Testeo modulo Point
 point1 = newP 1 2 
 point2 = newP 2 2 
 distance_p1_p2 = difP point1 point2 
 
 testeoModuloPoint = [distance_p1_p2 == 1.0]
 
--- Testeo modulo City
+
 
 cityC1 = newC "CABA" point1 
 cityC2 = newC "Moron" point2 
@@ -46,7 +44,7 @@ testeoModuloCity =
     testF cityWithNoName,
     testF (nameC cityWithNoName) ]
 
--- Testeo modulo Quality
+
 
 qualityForTests = newQ "A" 2 2.7 
 qualityCapacity = capacityQ qualityForTests 
@@ -65,7 +63,7 @@ testeoModuloQuality =
     testF qualityWithNegativeTol,
     testF qualityWithNegativeDelay]
 
--- Testeo modulo Link
+
 pointRandomCity = newP 3000 3000
 randomCity = newC "Farlands!" pointRandomCity 
 
@@ -92,7 +90,7 @@ testeoModuloLink =
     testF equalCities]
 
 
--- Testeo modulo Tunel
+
 
 cityTestTunnel_1 = newC "Fischer" (newP 3 3)
 cityTestTunnel_2 = newC "Morozevich" (newP 4 4)
@@ -128,7 +126,7 @@ testeoModuloTunel =
     delayTunnel == 1.8 * 4]
 
 
--- Testeo Modulo Region
+
 testingRegion = newR 
 cityRegion1 = newC "City 1" (newP 1 2)
 cityRegion2 = newC "City 2" (newP 2 3)
@@ -150,7 +148,7 @@ connectionTestingRegNotSuccessful2 = linkR testingRegionTwoCitiesAdded cityRegio
 connectionTestingRegNotSuccessful3 = linkR testingRegionTwoCitiesAdded cityNotInRegion1 cityNotInRegion2 qualityRegion
 
 {-
-As data type region doestn't have a show instance, to verify that functions worked as expected, testing was
+As data type region doestn't have a show instance, to verify that functions worked as expected, part of the testing was
 made in the terminal, with the help of two auxiliar functions created in the region module. 
 Each of the testing instances seen in this file passed correctly the tests: 
 
