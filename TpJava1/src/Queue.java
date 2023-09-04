@@ -1,28 +1,36 @@
+import java.util.ArrayList;
+
 public class Queue {
 
+    ArrayList<Object> ObjectsList = new ArrayList<Object>();
+
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return true;
+        return ObjectsList.isEmpty();
     }
 
     public Queue add( Object  cargo ) {
-        // TODO Auto-generated method stub
+        ObjectsList.add(cargo);
         return this;
     }
 
     public Object take() {
-        // TODO Auto-generated method stub
-        return null;
+        if (this.isEmpty()) throw new Error("Queue is empty");
+        else {
+            Object taken = ObjectsList.get(0);
+            ObjectsList.remove(taken);
+            return taken;
+        }
     }
 
     public Object head() {
-        // TODO Auto-generated method stub
-        return null;
+        if (this.isEmpty()) throw new Error("Queue is empty");
+        else {
+            return ObjectsList.get(0);
+        }
     }
 
     public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+        return ObjectsList.size();
     }
 
 }
