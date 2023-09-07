@@ -1,36 +1,72 @@
 import java.util.ArrayList;
 
 public class Queue {
-
-    ArrayList<Object> ObjectsList = new ArrayList<Object>();
+    ArrayList<Object> objectsList = new ArrayList<Object>();
+    static Queue queueSwitch = new EmptyQueue();
 
     public boolean isEmpty() {
-        return ObjectsList.isEmpty();
+        return objectsList.isEmpty();
     }
 
     public Queue add( Object  cargo ) {
-        ObjectsList.add(cargo);
+        queueSwitch = queueSwitch.add(cargo);
+        objectsList.add(cargo);
         return this;
     }
 
     public Object take() {
-        if (this.isEmpty()) throw new Error("Queue is empty");
-        else {
-            Object taken = ObjectsList.get(0);
-            ObjectsList.remove(taken);
-            return taken;
+        Queue safe = new EmptyQueue();
+        for (Object o : objectsList){
+            safe = safe.add(o);
         }
+        safe.take();
+
+        Object taken = objectsList.get(0);
+        objectsList.remove(0);
+        queueSwitch.objectsList.remove(0);
+        return taken;
     }
 
     public Object head() {
-        if (this.isEmpty()) throw new Error("Queue is empty");
-        else {
-            return ObjectsList.get(0);
-        }
+        return queueSwitch.head();
     }
 
     public int size() {
-        return ObjectsList.size();
+        return objectsList.size();
     }
 
+}
+
+class EmptyQueue extends Queue{
+    @Override
+    public Queue add( Object  cargo ) {
+        return new ThingsQueue().add(cargo);
+    }
+    @Override
+    public Object head() {
+        throw new Error("Queue is empty");
+    }
+
+    @Override
+    public Object take() {
+        throw new Error("Queue is empty");
+    }
+}
+
+class ThingsQueue extends Queue {
+    @Override
+    public Queue add(Object cargo) {
+        this.objectsList.add(cargo);
+        return this;
+    }
+
+    @Override
+    public Object head() {
+        return this.objectsList.get(0);
+    }
+
+    @Override
+    public Object take() {
+        return null;
+    }
 }
