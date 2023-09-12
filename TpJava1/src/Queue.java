@@ -24,9 +24,7 @@ public class Queue {
 
     public Object take() {
         Queue safe = new EmptyQueue();
-        for (Object o : objectsList){
-            safe = safe.add(o);
-        }
+        for (Object o : objectsList) safe = safe.add(o);
         safe.take();
 
         Object taken = objectsList.get(0);
