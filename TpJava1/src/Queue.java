@@ -2,14 +2,22 @@ import java.util.ArrayList;
 
 public class Queue {
     ArrayList<Object> objectsList = new ArrayList<Object>();
-    static Queue queueSwitch = new EmptyQueue();
+    private static EmptyQueue queueSwitch = new EmptyQueue();
+
+    public Queue() {
+        resetQueueSwitch();
+    }
+
+    protected void resetQueueSwitch() {
+        queueSwitch = new EmptyQueue();
+    }
 
     public boolean isEmpty() {
         return objectsList.isEmpty();
     }
 
     public Queue add( Object  cargo ) {
-        queueSwitch = queueSwitch.add(cargo);
+        queueSwitch = (EmptyQueue) queueSwitch.add(cargo);
         objectsList.add(cargo);
         return this;
     }
@@ -28,7 +36,8 @@ public class Queue {
     }
 
     public Object head() {
-        return queueSwitch.head();
+        queueSwitch.head();
+        return objectsList.get(0);
     }
 
     public int size() {
@@ -46,25 +55,27 @@ class EmptyQueue extends Queue{
     public Object head() {
         throw new Error("Queue is empty");
     }
-
     @Override
     public Object take() {
         throw new Error("Queue is empty");
     }
+    @Override
+    protected void resetQueueSwitch() {
+
+    }
 }
 
-class ThingsQueue extends Queue {
+class ThingsQueue extends EmptyQueue {
+
     @Override
     public Queue add(Object cargo) {
         this.objectsList.add(cargo);
         return this;
     }
-
     @Override
     public Object head() {
         return this.objectsList.get(0);
     }
-
     @Override
     public Object take() {
         return null;
