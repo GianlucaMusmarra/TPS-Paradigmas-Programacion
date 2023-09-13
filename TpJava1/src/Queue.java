@@ -1,11 +1,8 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Queue {
-    LinkedList<Element> elements = new LinkedList<>();
-
-    public Queue() {
-        elements.add(new BlankElement().add("Queue is empty"));
-    }
+    LinkedList<Element> elements = new LinkedList<>(Arrays.asList(new BlankElement().add("Queue is empty")));
 
     public boolean isEmpty() {
         return elements.size() == 1;
