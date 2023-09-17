@@ -36,10 +36,8 @@ public class QueueTest {
   @Test public void test06QueueBehavesFIFO() {
     Queue queue = new Queue();
 
-
     queue.add( FIRST );
     queue.add( SECOND );
-
 
     assertEquals( queue.take(), FIRST);
     assertEquals( queue.take(), SECOND);
@@ -58,7 +56,9 @@ public class QueueTest {
 
   @Test public void test08HeadDoesNotRemoveObjectFromQueue() {
     Queue queue = new Queue();
+
     queue.add(SOMETHING);
+
     assertEquals( 1, queue.size() );
     queue.head();
     assertEquals( 1, queue.size() );

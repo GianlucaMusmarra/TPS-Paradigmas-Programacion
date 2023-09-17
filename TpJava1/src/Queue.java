@@ -31,7 +31,6 @@ class Element {
     public Element add(Object o){
         object = o; return this;
     }
-
     public Object getObject(){
         return object;
     }
