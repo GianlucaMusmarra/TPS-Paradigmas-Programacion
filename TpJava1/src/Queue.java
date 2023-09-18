@@ -3,7 +3,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 public class Queue {
-    LinkedList<Element> elements = new LinkedList<>(Collections.singletonList(new BlankElement().add("Queue is empty")));
+    public static final String QUEUE_IS_EMPTY = "Queue is empty";
+    LinkedList<Element> elements = new LinkedList<>(Collections.singletonList(new BlankElement().add(QUEUE_IS_EMPTY)));
 
     public boolean isEmpty() {
         return elements.size() == 1;
