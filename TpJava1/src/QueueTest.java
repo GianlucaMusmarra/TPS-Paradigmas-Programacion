@@ -69,15 +69,15 @@ public class QueueTest {
 
     assertEquals( 2,  queue.size());
   }
-  @Test public void test10CanNotTakeWhenThereAreNoObjectsInTheQueue() {assertThrowsLike(() -> queue.take(), "Queue is empty");}
+  @Test public void test10CanNotTakeWhenThereAreNoObjectsInTheQueue() {assertThrowsLike(() -> queue.take(), Queue.QUEUE_IS_EMPTY);}
 
   @Test public void test09CanNotTakeWhenThereAreNoObjectsInTheQueueAndTheQueueHadObjects() {
     queue.add("Something");
     queue.take();
 
-    assertThrowsLike(() -> queue.take(), "Queue is empty");
+    assertThrowsLike(() -> queue.take(), Queue.QUEUE_IS_EMPTY);
   }
-  @Test public void test10CanNotHeadWhenThereAreNoObjectsInTheQueue() {assertThrowsLike(() -> queue.head(), "Queue is empty");}
+  @Test public void test10CanNotHeadWhenThereAreNoObjectsInTheQueue() {assertThrowsLike(() -> queue.head(), Queue.QUEUE_IS_EMPTY);}
 
   private void assertThrowsLike(Executable executable, String message ) {
     assertEquals( message,  assertThrows(Error.class, executable).getMessage() );
