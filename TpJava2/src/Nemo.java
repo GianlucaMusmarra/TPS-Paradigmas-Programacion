@@ -7,6 +7,8 @@ public class Nemo {
     public String bow = "North";
     public ArrayList<Integer> coordinates= new ArrayList<>();
 
+    public boolean isDestroyed = false;
+
     public Nemo(int x, int y){
         setCoordinates(x,y);
     }
@@ -25,12 +27,26 @@ public class Nemo {
 
         for (int i = 0; i < movement.length(); i ++ )
         {
-            char direction = movement.charAt(i);
+            char input = movement.charAt(i);
 
-            if (direction == 'd'){ y--;}
-            if (direction == 'u'){ y++;}
+            if (input == 'u'){ y++;}
+            if (input == 'd'){ y--;}
+            if(input == 'f'){
+                if (this.bow == "North"){
+                    y++;
+                }
+                else if (this.bow == "East"){
+                    x--;
+                }
+                else if (this.bow == "South"){
+                    y--;
+                }
+                else if (this.bow == "West"){
+                    x++;
+                }
+            }
 
-            if(direction == 'l'){
+            if(input == 'l'){
                 if (this.bow == "North"){
                     this.bow = "East";
                 }
@@ -44,7 +60,8 @@ public class Nemo {
                     this.bow = "North";
                 }
             }
-            if(direction == 'r'){
+
+            if(input == 'r'){
                 if (this.bow == "North"){
                     this.bow = "West";
                 }
@@ -56,6 +73,12 @@ public class Nemo {
                 }
                 else if (this.bow == "East"){
                     this.bow = "North";
+                }
+            }
+            
+            if(input == 'm'){
+                if(y<-1){
+                    this.isDestroyed = true;
                 }
             }
         }
