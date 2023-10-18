@@ -1,89 +1,76 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Nemo {
 
-    public Boolean isUnderWater ;
-    public String bow = "North";
+    public LinkedList<CardinalPoints> bowOrientation = new LinkedList<>(Arrays.asList(new North(), new East(), new South(), new West()));
+    public String bow(){return bowOrientation.get(0).toString();}
+
+    public LinkedList<DepthLevel> depthMeter = new LinkedList<>(Arrays.asList(new DepthSurface(), new DepthSurface()));
+
     public ArrayList<Integer> coordinates= new ArrayList<>();
 
-    public boolean isDestroyed = false;
-
-    public Nemo(int x, int y){
-        setCoordinates(x,y);
+    public Nemo(int x, int y, int z){
+        setCoordinates(x,y,z);
     }
 
-    public void setCoordinates(int x, int y) {
+    public boolean isUnderWater(){
+        return this.coordinates.get(0) < -1;
+    }
+
+    public void setCoordinates(int x, int y, int z) {
         this.coordinates.clear();
         this.coordinates.add(x);
         this.coordinates.add(y);
-
-        this.isUnderWater = y < 0;
+        this.coordinates.add(z);
     }
 
     public void move(String movement) {
         int x = coordinates.get(0);
         int y = coordinates.get(1);
+        int z = coordinates.get(2);
 
         for (int i = 0; i < movement.length(); i ++ )
         {
             char input = movement.charAt(i);
 
-            if (input == 'u'){ y++;}
-            if (input == 'd'){ y--;}
-            if(input == 'f'){
-                if (this.bow == "North"){
-                    y++;
-                }
-                else if (this.bow == "East"){
-                    x--;
-                }
-                else if (this.bow == "South"){
-                    y--;
-                }
-                else if (this.bow == "West"){
-                    x++;
-                }
+            if (input == 'u'){
+                z++;
+                depthMeter.addLast(new DepthSurface());
+                depthMeter.addLast(new DepthSurface());
+                depthMeter.removeFirst();
+                depthMeter.removeFirst();
+                setCoordinates(x,y,z);
+            }
+
+            if (input == 'd'){
+                z--;
+                depthMeter.addFirst(new DepthUnderWater());
+                depthMeter.addFirst(new DepthUnderWater());
+                depthMeter.removeLast();
+                setCoordinates(x,y,z);
+            }
+
+            if(input == 'm'){
+                depthMeter.get(0).shootChocolate();
             }
 
             if(input == 'l'){
-                if (this.bow == "North"){
-                    this.bow = "East";
-                }
-                else if (this.bow == "East"){
-                    this.bow = "South";
-                }
-                else if (this.bow == "South"){
-                    this.bow = "West";
-                }
-                else if (this.bow == "West"){
-                    this.bow = "North";
-                }
+                bowOrientation.addFirst(bowOrientation.removeLast());
             }
 
             if(input == 'r'){
-                if (this.bow == "North"){
-                    this.bow = "West";
-                }
-                else if (this.bow == "West"){
-                    this.bow = "South";
-                }
-                else if (this.bow == "South"){
-                    this.bow = "East";
-                }
-                else if (this.bow == "East"){
-                    this.bow = "North";
-                }
+                bowOrientation.addLast(bowOrientation.removeFirst());
             }
-            
-            if(input == 'm'){
-                if(y<-1){
-                    this.isDestroyed = true;
-                }
+
+            if(input == 'f'){
+                bowOrientation.get(0).forwardSubmarine(this);
             }
         }
 
-        setCoordinates(x,y);
+
     }
 
 
