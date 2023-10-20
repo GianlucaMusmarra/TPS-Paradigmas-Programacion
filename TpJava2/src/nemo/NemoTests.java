@@ -1,9 +1,10 @@
+package nemo;
+
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class NemoTests {
@@ -17,24 +18,24 @@ public class NemoTests {
     public void test01(){
         Nemo robot = new Nemo(0,0,0);
 
-        assertEquals(0, robot.coordinates.get(0).intValue());
-        assertEquals(0, robot.coordinates.get(1).intValue());
+        assertEquals(0, robot.getXPos());
+        assertEquals(0, robot.getYPos());
 
-        assertEquals("North", robot.bow());
+        assertEquals("cardinal_points.North", robot.movementManager.bow());
     }
 
     @Test // robot respects surface levels
     public void test02(){
         Nemo robot = new Nemo(0,0,0);
 
-        assertEquals(false, robot.isUnderWater());
+        assertEquals(false, robot.movementManager.isUnderWater());
     }
 
     @Test // robot bow() heading north when created
     public void test03(){
         Nemo robot = new Nemo(0,0,0);
 
-        assertEquals("North", robot.bow());
+        assertEquals("cardinal_points.North", robot.movementManager.bow());
     }
 
     @Test // stays in the same place when move is empty
@@ -42,8 +43,8 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("");
 
-        assertEquals(0, robot.coordinates.get(0).intValue());
-        assertEquals(0, robot.coordinates.get(1).intValue());
+        assertEquals(0, robot.getXPos());
+        assertEquals(0, robot.getYPos());
     }
 
     @Test // moves down correctly
@@ -51,8 +52,8 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("d");
 
-        assertEquals(0, robot.coordinates.get(0).intValue());
-        assertEquals((-1), robot.coordinates.get(2).intValue());
+        assertEquals(0, robot.getXPos());
+        assertEquals((-1), robot.getZPos());
     }
 
 
@@ -61,8 +62,8 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("u");
 
-        assertEquals(0, robot.coordinates.get(0).intValue());
-        assertEquals((1), robot.coordinates.get(2).intValue());
+        assertEquals(0, robot.getXPos());
+        assertEquals((1), robot.getZPos());
     }
 
     @Test // combination of u and d works correctly
@@ -70,8 +71,8 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("uuud");
 
-        assertEquals(0, robot.coordinates.get(0).intValue());
-        assertEquals((2), robot.coordinates.get(2).intValue());
+        assertEquals(0, robot.getXPos());
+        assertEquals((2), robot.getZPos());
     }
 
     @Test // rotates correctly -90 grades
@@ -79,7 +80,7 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("l");
 
-        assertEquals("West", robot.bow());
+        assertEquals("cardinal_points.West", robot.movementManager.bow());
     }
 
     @Test // rotates correctly +90 grades
@@ -87,7 +88,7 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("r");
 
-        assertEquals("East", robot.bow());
+        assertEquals("cardinal_points.East", robot.movementManager.bow());
     }
 
     @Test // Combination of l and r works correctly
@@ -95,7 +96,7 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("lrl");
 
-        assertEquals("West", robot.bow());
+        assertEquals("cardinal_points.West", robot.movementManager.bow());
     }
 
     @Test // combination of u , d, l and r works correctly
@@ -103,9 +104,9 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("urrudulu");
 
-        assertEquals(0, robot.coordinates.get(0).intValue());
-        assertEquals((3), robot.coordinates.get(2).intValue());
-        assertEquals("East", robot.bow());
+        assertEquals(0, robot.getXPos());
+        assertEquals((3), robot.getZPos());
+        assertEquals("cardinal_points.East", robot.movementManager.bow());
     }
 
     @Test // forward changes y value
@@ -113,7 +114,7 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("f");
 
-        assertEquals(1, robot.coordinates.get(1).intValue());
+        assertEquals(1, robot.getYPos());
     }
 
     @Test // forward does not change x value
@@ -121,7 +122,7 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("f");
 
-        assertEquals(0, robot.coordinates.get(0).intValue());
+        assertEquals(0, robot.getXPos());
     }
 
     @Test // combination of f, l and r works correctly
@@ -129,8 +130,8 @@ public class NemoTests {
         Nemo robot = new Nemo(0,0,0);
         robot.move("rflf");
 
-        assertEquals(1, robot.coordinates.get(0).intValue());
-        assertEquals(1, robot.coordinates.get(1).intValue());
+        assertEquals(1, robot.getXPos());
+        assertEquals(1, robot.getYPos());
     }
 
     @Test // m in surface does not destroys robot
@@ -148,6 +149,14 @@ public class NemoTests {
     public void test17() {
         Nemo robot = new Nemo(0,0,0);
         robot.move("dd");
+
+        assertThrowsLike(() -> robot.move("m"), "Nemo has been destroyed!");
+    }
+
+    @Test // m underwater u surface and m, underwater again destroys robot
+    public void test18() {
+        Nemo robot = new Nemo(0,0,0);
+        robot.move("ddud");
 
         assertThrowsLike(() -> robot.move("m"), "Nemo has been destroyed!");
     }
