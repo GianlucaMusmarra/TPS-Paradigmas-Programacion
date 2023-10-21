@@ -1,6 +1,3 @@
-package commands;
-
-import nemo.Nemo;
 
 public abstract class Command {
     public abstract boolean acceptsCommand(String command);

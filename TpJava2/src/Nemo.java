@@ -1,8 +1,3 @@
-package nemo;
-
-import commands.CommandManager;
-import movement.MovementManager;
-
 import java.util.Arrays;
 
 public class Nemo {
@@ -11,9 +6,9 @@ public class Nemo {
 
     public CommandManager commandManager = new CommandManager(this);
 
-    public int getXPos(){return movementManager.coordinates.get(0);}
-    public int getYPos(){return movementManager.coordinates.get(1);}
-    public int getZPos(){return movementManager.coordinates.get(2);}
+    public int getXPos(){return movementManager.getXPos();}
+    public int getYPos(){return movementManager.getYPos();}
+    public int getZPos(){return movementManager.getZPos();}
 
     public Nemo(int x, int y, int z){
         movementManager.setCoordinates(x,y,z);

@@ -1,5 +1,3 @@
-package nemo;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -42,14 +40,14 @@ public class NemoTests {
     }
     @Test
     public void NemoMovesUpCorrectly(){
-        robot.move("u");
-        verificatesCoordinates(0,0,1);
+        robot.move("du");
+        verificatesCoordinates(0,0,0);
     }
 
     @Test
     public void NemoRespectsTheMaximumHeight(){
         robot.move("uuu");
-        verificatesCoordinates(0,0,1);
+        verificatesCoordinates(0,0,0);
     }
 
     @Test

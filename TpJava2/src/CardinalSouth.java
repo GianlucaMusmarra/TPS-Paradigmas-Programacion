@@ -1,8 +1,4 @@
-package rotation;
-
-import nemo.Nemo;
-
-public class South extends CardinalPoints {
+public class CardinalSouth extends CardinalPoints {
     @Override
     public void forwardSubmarine(Nemo nemo) {
         nemo.movementManager.addToCoordinates(0,-1,0);
