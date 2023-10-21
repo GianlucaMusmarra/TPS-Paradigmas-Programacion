@@ -9,6 +9,6 @@ public class South extends CardinalPoints {
     }
     @Override
     public String toString() {
-        return "cardinal_points.South";
+        return "South";
     }
 }

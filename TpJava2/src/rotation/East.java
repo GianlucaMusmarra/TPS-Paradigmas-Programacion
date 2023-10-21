@@ -10,6 +10,6 @@ public class East extends CardinalPoints {
 
     @Override
     public String toString() {
-        return "cardinal_points.East";
+        return "East";
     }
 }
