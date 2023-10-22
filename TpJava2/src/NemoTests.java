@@ -18,14 +18,9 @@ public class NemoTests {
     @Test
     public void NemoCreatesInTheCorrectVector(){verificatesCoordinates(0,0,0); }
     @Test
-    public void NemoCreatesHeadingNorth(){verificatesBow("North");}
+    public void NemoCreatesHeadingOrientation(){verificatesBow("North");}
     @Test
-    public void NemoRespectsSurface(){assertFalse(robot.movementManager.isUnderWater());;}
-
-    @Test
-    public void NemoRespectsAlmostSurface(){
-        Nemo robot = new Nemo(0,0, new CardinalNorth());
-        assertFalse(robot.movementManager.isUnderWater());}
+    public void NemoRespectsSurface(){notUnderWater();}
 
     @Test
     public void NemoStaysInTheSamePlaceWhenMoveIsEmpty(){
@@ -51,6 +46,12 @@ public class NemoTests {
     }
 
     @Test
+    public void NemoRespectsFirstLevelOfDepth(){
+        robot.move("d");
+        notUnderWater();;
+    }
+
+    @Test
     public void NemoDoesNotRotateWhenCommandIsEmpty(){
         robot.move("");
         verificatesBow("North");
@@ -69,6 +70,18 @@ public class NemoTests {
     }
 
     @Test
+    public void NemoRotates180GradesLeft(){
+        robot.move("ll");
+        verificatesBow("South");
+    }
+
+    @Test
+    public void NemoRotates180GradesRight(){
+        robot.move("rr");
+        verificatesBow("South");
+    }
+
+    @Test
     public void NemoRotates360GradesCorrectly() {
         robot.move("rrrr");
         verificatesBow("North");
@@ -84,7 +97,7 @@ public class NemoTests {
     }
 
     @Test
-    public void ForwardHeadingWestDecreaseXValue() {
+    public void ForwardHeadingEastDecreaseXValue() {
         robot.move("lf");
         verificatesCoordinates((-1),0,0);
     }
@@ -96,7 +109,7 @@ public class NemoTests {
     }
 
     @Test
-    public void ForwardHeadingEastIncreaseXValue() {
+    public void ForwardHeadingWestIncreaseXValue() {
         robot.move("rf");
         verificatesCoordinates(1,0,0);
     }
@@ -141,5 +154,6 @@ public class NemoTests {
     }
 
     private void verificatesBow(String bow){ assertEquals(bow, robot.movementManager.bow()); }
+    private void notUnderWater() {assertFalse(robot.movementManager.isUnderWater());}
 
 }
