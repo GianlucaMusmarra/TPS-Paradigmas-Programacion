@@ -15,7 +15,7 @@ public class NemoTests {
     private Nemo robot;
 
     @Before
-    public void init(){this.robot = new Nemo(0,0, new CardinalNorth());}
+    public void init(){this.robot = new Nemo(new Position(0,0), new CardinalNorth());}
 
     @Test
     public void NemoCreatesInTheCorrectVector(){verificatesCoordinates(0,0,0); }

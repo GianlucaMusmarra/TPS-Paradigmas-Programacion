@@ -1,15 +1,14 @@
 package tp3;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
 public class MovementManager {
 
-    private ArrayList<Integer> coordinates= new ArrayList<>();
-    public int getXPos(){return coordinates.get(0);}
-    public int getYPos(){return coordinates.get(1);}
-    public int getZPos(){return coordinates.get(2);}
+    private Position coordinates;
+    public int getXPos(){return coordinates.getX();}
+    public int getYPos(){return coordinates.getY();}
+    public int getZPos(){return coordinates.getZ();}
 
     public CardinalPoints bowOrientation;
 
@@ -18,32 +17,23 @@ public class MovementManager {
     public LinkedList<DepthLevel> depthMeter = new LinkedList<>(Arrays.asList(new DepthSurface()));
 
     public boolean isUnderWater(){
-        return this.coordinates.get(0) < -1;
+        return this.coordinates.getZ() < -1;
     }
 
     public Nemo nemo;
 
-    public MovementManager(Nemo submarine, CardinalPoints cardinalPoint){
+    public MovementManager(Nemo submarine, CardinalPoints cardinalPoint, Position pos){
         this.nemo = submarine;
         this.bowOrientation = cardinalPoint;
+        this.coordinates = pos;
     }
 
     public void addToCoordinates(int x, int y, int z) {
-        int x0 = this.coordinates.get(0);
-        int y0 = this.coordinates.get(1);
-        int z0 = this.coordinates.get(2);
+        int x0 = this.getXPos();
+        int y0 = this.getYPos();
+        int z0 = this.getZPos();
 
-        this.coordinates.clear();
-        this.coordinates.add(x0 +x);
-        this.coordinates.add(y0 +y);
-        this.coordinates.add(z0 +z);
-    }
-
-    public void setCoordinates(int x, int y, int z) {
-        this.coordinates.clear();
-        this.coordinates.add(x);
-        this.coordinates.add(y);
-        this.coordinates.add(z);
+        this.coordinates.setCoordinates(x0 + x, y0 +y, z +z0);
     }
 
     public void turnBowRight(){

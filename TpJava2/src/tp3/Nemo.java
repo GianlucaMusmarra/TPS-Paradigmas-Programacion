@@ -10,9 +10,8 @@ public class Nemo {
     public int getYPos(){return movementManager.getYPos();}
     public int getZPos(){return movementManager.getZPos();}
 
-    public Nemo(int x, int y, CardinalPoints facingDirection){
-        movementManager = new MovementManager(this, facingDirection);
-        movementManager.setCoordinates(x,y,0);
+    public Nemo(Position initialPos, CardinalPoints facingDirection){
+        movementManager = new MovementManager(this, facingDirection, initialPos);
     }
 
     public void move(String movement) {
