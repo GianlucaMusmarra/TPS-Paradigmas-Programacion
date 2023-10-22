@@ -2,20 +2,19 @@ import java.util.Arrays;
 
 public class Nemo {
 
-    public MovementManager movementManager = new MovementManager(this);
-
-    public CommandManager commandManager = new CommandManager(this);
+    public MovementManager movementManager;
 
     public int getXPos(){return movementManager.getXPos();}
     public int getYPos(){return movementManager.getYPos();}
     public int getZPos(){return movementManager.getZPos();}
 
-    public Nemo(int x, int y, int z){
-        movementManager.setCoordinates(x,y,z);
+    public Nemo(int x, int y, CardinalPoints facingDirection){
+        movementManager = new MovementManager(this, facingDirection);
+        movementManager.setCoordinates(x,y,0);
     }
 
     public void move(String movement) {
-        Arrays.stream(movement.split("")).forEach(c -> commandManager.executeCommand(c, this));
+        Arrays.stream(movement.split("")).forEach(c -> CommandManager.executeCommand(c, this));
     }
 
     public void shootChocolate(){

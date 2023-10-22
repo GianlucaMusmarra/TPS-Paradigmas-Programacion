@@ -13,7 +13,7 @@ public class NemoTests {
     private Nemo robot;
 
     @Before
-    public void init(){this.robot = new Nemo(0,0,0);}
+    public void init(){this.robot = new Nemo(0,0, new CardinalNorth());}
 
     @Test
     public void NemoCreatesInTheCorrectVector(){verificatesCoordinates(0,0,0); }
@@ -24,7 +24,7 @@ public class NemoTests {
 
     @Test
     public void NemoRespectsAlmostSurface(){
-        Nemo robot = new Nemo(0,0,(-1));
+        Nemo robot = new Nemo(0,0, new CardinalNorth());
         assertFalse(robot.movementManager.isUnderWater());}
 
     @Test

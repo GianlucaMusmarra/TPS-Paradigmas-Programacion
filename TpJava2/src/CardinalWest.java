@@ -8,4 +8,14 @@ public class CardinalWest extends CardinalPoints {
     public String toString() {
         return "West";
     }
+
+    @Override
+    public CardinalPoints rotateRight(){
+        return new CardinalNorth();
+    }
+
+    @Override
+    public CardinalPoints rotateLeft(){
+        return new CardinalSouth();
+    }
 }

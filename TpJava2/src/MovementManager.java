@@ -9,8 +9,9 @@ public class MovementManager {
     public int getYPos(){return coordinates.get(1);}
     public int getZPos(){return coordinates.get(2);}
 
-    public LinkedList<CardinalPoints> bowOrientation = new LinkedList<>();
-    public String bow(){return bowOrientation.get(0).toString();}
+    public CardinalPoints bowOrientation;
+
+    public String bow(){return bowOrientation.toString();}
 
     public LinkedList<DepthLevel> depthMeter = new LinkedList<>(Arrays.asList(new DepthSurface()));
 
@@ -20,12 +21,9 @@ public class MovementManager {
 
     public Nemo nemo;
 
-    public MovementManager(Nemo submarine){
+    public MovementManager(Nemo submarine, CardinalPoints cardinalPoint){
         this.nemo = submarine;
-        this.bowOrientation.add(new CardinalNorth());
-        this.bowOrientation.add(new CardinalEast());
-        this.bowOrientation.add(new CardinalSouth());
-        this.bowOrientation.add(new CardinalWest());
+        this.bowOrientation = cardinalPoint;
     }
 
     public void addToCoordinates(int x, int y, int z) {
@@ -47,15 +45,13 @@ public class MovementManager {
     }
 
     public void turnBowRight(){
-        bowOrientation.addLast(bowOrientation.removeFirst());
+        bowOrientation = bowOrientation.rotateRight();
     }
 
-    public void turnBowLeft(){
-        bowOrientation.addFirst(bowOrientation.removeLast());
-    }
+    public void turnBowLeft(){bowOrientation = bowOrientation.rotateLeft();}
 
     public void moveForward(){
-        bowOrientation.get(0).forwardSubmarine(nemo);
+        bowOrientation.forwardSubmarine(nemo);
     }
 
     public void moveUp(){
