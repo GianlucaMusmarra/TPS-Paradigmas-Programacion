@@ -1,3 +1,5 @@
+package tp3;
+
 public class CardinalWest extends CardinalPoints {
     @Override
     public void forwardSubmarine(Nemo nemo) {

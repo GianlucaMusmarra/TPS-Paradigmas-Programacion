@@ -1,3 +1,5 @@
+package tp3;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -133,14 +135,14 @@ public class NemoTests {
     public void NemoDestroysCorrectly() {
         robot.move("dd");
 
-        assertThrowsLike(() -> robot.move("m"), "Nemo has been destroyed!");
+        assertThrowsLike(() -> robot.move("m"), "tp3.Nemo has been destroyed!");
     }
 
     @Test
     public void NemoDivesUpDivesDestroysCorrectly() {
         robot.move("ddud");
 
-        assertThrowsLike(() -> robot.move("m"), "Nemo has been destroyed!");
+        assertThrowsLike(() -> robot.move("m"), "tp3.Nemo has been destroyed!");
     }
 
     private void assertThrowsLike(Executable executable, String message ) {

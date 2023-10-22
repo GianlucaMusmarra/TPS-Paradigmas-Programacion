@@ -1,3 +1,5 @@
+package tp3;
+
 public class CommandRight extends Command{
     public boolean acceptsCommand(String command){
         return command.equals("r");

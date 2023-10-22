@@ -1,3 +1,5 @@
+package tp3;
+
 public class CommandDown extends Command{
     public boolean acceptsCommand(String command){
         return command.equals("d");

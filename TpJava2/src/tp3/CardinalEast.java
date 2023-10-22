@@ -1,20 +1,23 @@
-public class CardinalSouth extends CardinalPoints {
+package tp3;
+
+public class CardinalEast extends CardinalPoints {
     @Override
     public void forwardSubmarine(Nemo nemo) {
-        nemo.movementManager.addToCoordinates(0,-1,0);
+        nemo.movementManager.addToCoordinates(1,0,0);
     }
+
     @Override
     public String toString() {
-        return "South";
+        return "East";
     }
 
     @Override
     public CardinalPoints rotateRight(){
-        return new CardinalWest();
+        return new CardinalSouth();
     }
 
     @Override
     public CardinalPoints rotateLeft(){
-        return new CardinalEast();
+        return new CardinalNorth();
     }
 }

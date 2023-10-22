@@ -1,13 +1,16 @@
+package tp3;
+
 import java.util.LinkedList;
 
-public class DepthAlmostSurface extends DepthLevel {
+public class DepthUnderWater extends DepthLevel {
     @Override
     public void shootChocolate() {
+        throw new Error("tp3.Nemo has been destroyed!");
     }
 
     @Override
     public void goDown(LinkedList<DepthLevel> bowOrientation) {
-        bowOrientation.addFirst(new DepthUnderWater());
+        bowOrientation.add(new DepthUnderWater());
     }
 
     @Override

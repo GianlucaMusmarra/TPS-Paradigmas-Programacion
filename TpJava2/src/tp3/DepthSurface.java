@@ -1,3 +1,5 @@
+package tp3;
+
 import java.util.LinkedList;
 
 public class DepthSurface extends DepthLevel {
