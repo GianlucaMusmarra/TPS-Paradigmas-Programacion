@@ -7,9 +7,7 @@ public class Position {
     private int z;
 
     public Position(int startX, int startY){
-        this.x = startX;
-        this.y = startY;
-        this.z = 0;
+        this.setCoordinates(startX, startY, 0);
     }
 
     public int getX (){return this.x;}
