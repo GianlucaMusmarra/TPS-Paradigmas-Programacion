@@ -40,8 +40,7 @@ public class Linea {
     }
 
     public boolean finished() {
-
-        return verificarWin();
+        return false;
     }
 
     public void playRedAt(int columna) {
@@ -63,6 +62,8 @@ public class Linea {
             introduceMovement(columna, blue);
             turno = "red";
         };
+
+
     }
 
     public void introduceMovement(int columna, char ficha ) {
@@ -75,82 +76,77 @@ public class Linea {
         grilla.set(realIndex, columnaToUpdate);
         contador.set(realIndex, valueContador + 1);
 
-        verificarWin(); // ?? no se si hace falta
+        verificarWin(realIndex); // ?? no se si hace falta
     }
 
-    public boolean verificarWin() {
-        int rachaRojo;
-        int rachaAzul;
+    public boolean verificarWin(int index) {
 
-        char previo;
+
         char actual;
 
 
         // vertical
 
-        for(int i = 0 ; i < base ; i ++) {
-            rachaRojo = 0;
-            rachaAzul = 0;
-            previo = grilla.get(i).get(0);
+
+           int rachaRojoV = 0;
+           int rachaAzulV = 0;
+            char previoVert = grilla.get(index).get(0);
 
             for (int x = 0; x < altura; x++) {
 
-                actual = grilla.get(i).get(x);
+                actual = grilla.get(index).get(x);
 
-                if ((previo == actual) && (previo == red)) {
-                    rachaRojo += 1;
-                    rachaAzul = 0;
+                if ((previoVert == actual) && (previoVert == red)) {
+                    rachaRojoV += 1;
+                    rachaAzulV = 0;
                 }
-                else if ((previo == actual) && (previo == blue)) {
-                    rachaAzul += 1;
-                    rachaRojo = 0;
+                else if ((previoVert == actual) && (previoVert == blue)) {
+                    rachaAzulV += 1;
+                    rachaRojoV = 0;
                 }
 
 
-                if(rachaAzul == 4){
+                if(rachaAzulV == 4){
                     return true;
                 }
-                if(rachaRojo == 4){
+                if(rachaRojoV == 4){
                     return true;
                 }
 
-                previo = grilla.get(i).get(x);
+                previoVert = grilla.get(index).get(x);
 
             }
 
-        }
+
          // horizontal
-        for(int i = 0 ; i < altura ; i ++) {
-            rachaRojo = 0;
-            rachaAzul = 0;
-            previo = grilla.get(0).get(i);
+
+            int rachaRojoH = 0;
+            int rachaAzulH = 0;
+            char previoH = grilla.get(0).get(index);
 
             for (int x = 0; x < base; x++) {
 
-                actual = grilla.get(x).get(i);
+                actual = grilla.get(x).get(index);
 
-                if ((previo == actual) && (previo == red)) {
-                    rachaRojo += 1;
-                    rachaAzul = 0;
+                if ((previoH == actual) && (previoH == red)) {
+                    rachaRojoH += 1;
+                    rachaAzulH = 0;
                 }
-                else if ((previo == actual) && (previo == blue)) {
-                    rachaAzul += 1;
-                    rachaRojo = 0;
+                else if ((previoH == actual) && (previoH == blue)) {
+                    rachaAzulH += 1;
+                    rachaRojoH = 0;
                 }
 
-
-                if(rachaAzul == 4){
+                if(rachaAzulH == 4){
                     return true;
                 }
-                if(rachaRojo == 4){
+                if(rachaRojoH == 4){
                     return true;
                 }
 
-                previo = grilla.get(x).get(i);
+                previoH = grilla.get(x).get(index);
 
             }
-
-        }
 
 
 

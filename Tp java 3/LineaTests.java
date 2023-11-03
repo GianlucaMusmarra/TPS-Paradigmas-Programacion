@@ -110,7 +110,7 @@ public class LineaTests {
         linea.playBlueAt( 2);
         linea.playRedAt(1);
 
-        assertTrue(linea.verificarWin());
+        assertTrue(linea.verificarWin(1));
 
     }
 
@@ -126,7 +126,7 @@ public class LineaTests {
         linea.playRedAt(3);
         linea.playBlueAt(2);
 
-        assertTrue(linea.verificarWin());
+        assertTrue(linea.verificarWin(2));
 
     }
 
@@ -141,7 +141,7 @@ public class LineaTests {
         linea.playBlueAt( 3);
         linea.playRedAt(4);
 
-        assertTrue(linea.verificarWin());
+        assertTrue(linea.verificarWin(4));
 
     }
 
@@ -159,7 +159,7 @@ public class LineaTests {
         linea.playRedAt(1);
         linea.playBlueAt( 4);
 
-        assertTrue(linea.verificarWin());
+        assertTrue(linea.verificarWin(4));
 
     }
 
