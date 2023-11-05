@@ -11,9 +11,19 @@ public class Linea {
     public String turno = "red";
     public char red = 'x';
     public char blue = 'o';
+    public char modoDeJuego;
+    public String ganador;
 
 
     public Linea(int base, int altura, char c) {
+
+        if (base < 4 || altura < 4){
+            throw new RuntimeException("Invalid setup.");
+        }
+        if (c != 'A' && c!= 'B' && c!= 'C' ){
+            throw new RuntimeException("Invalid setup.");
+        }
+
 
         for (int i = 1; i <= base; i++) {
             List lista = new ArrayList();
@@ -30,6 +40,7 @@ public class Linea {
 
         this.altura = altura;
         this.base = base;
+        modoDeJuego = c;
     }
 
 
@@ -48,8 +59,9 @@ public class Linea {
             throw new RuntimeException("Wrong turn!");
         }
         else {
-            introduceMovement(columna, red);
             turno = "blue";
+            introduceMovement(columna, red);
+
         };
 
     }
@@ -59,8 +71,9 @@ public class Linea {
             throw new RuntimeException("Wrong turn!");
         }
         else {
-            introduceMovement(columna, blue);
             turno = "red";
+            introduceMovement(columna, blue);
+
         };
 
 
@@ -76,84 +89,85 @@ public class Linea {
         grilla.set(realIndex, columnaToUpdate);
         contador.set(realIndex, valueContador + 1);
 
-        verificarWin(realIndex); // ?? no se si hace falta
     }
 
     public boolean verificarWin(int index) {
 
-
         char actual;
 
+        if(modoDeJuego == 'A' || modoDeJuego == 'C') {
+            // vertical
+            int realIndex = index - 1;
 
-        // vertical
-
-
-           int rachaRojoV = 0;
-           int rachaAzulV = 0;
-            char previoVert = grilla.get(index).get(0);
+            int rachaRojoV = 0;
+            int rachaAzulV = 0;
+            char previoVert = grilla.get(realIndex).get(0);
 
             for (int x = 0; x < altura; x++) {
 
-                actual = grilla.get(index).get(x);
+                actual = grilla.get(realIndex).get(x);
 
                 if ((previoVert == actual) && (previoVert == red)) {
                     rachaRojoV += 1;
                     rachaAzulV = 0;
-                }
-                else if ((previoVert == actual) && (previoVert == blue)) {
+                } else if ((previoVert == actual) && (previoVert == blue)) {
                     rachaAzulV += 1;
                     rachaRojoV = 0;
                 }
 
-
-                if(rachaAzulV == 4){
+                if (rachaAzulV == 4) {
+                    ganador = "blue";
                     return true;
                 }
-                if(rachaRojoV == 4){
+                if (rachaRojoV == 4) {
+                    ganador = "red";
                     return true;
                 }
 
-                previoVert = grilla.get(index).get(x);
+                previoVert = grilla.get(realIndex).get(x);
 
             }
 
 
-         // horizontal
+            // horizontal
 
             int rachaRojoH = 0;
             int rachaAzulH = 0;
-            char previoH = grilla.get(0).get(index);
+            char previoH = grilla.get(0).get(contador.get(realIndex) - 1);
 
             for (int x = 0; x < base; x++) {
 
-                actual = grilla.get(x).get(index);
+                actual = grilla.get(x).get(contador.get(realIndex) - 1);
 
                 if ((previoH == actual) && (previoH == red)) {
                     rachaRojoH += 1;
                     rachaAzulH = 0;
-                }
-                else if ((previoH == actual) && (previoH == blue)) {
+                } else if ((previoH == actual) && (previoH == blue)) {
                     rachaAzulH += 1;
                     rachaRojoH = 0;
                 }
 
-                if(rachaAzulH == 4){
+                if (rachaAzulH == 4) {
+                    ganador = "blue";
                     return true;
                 }
-                if(rachaRojoH == 4){
+                if (rachaRojoH == 4) {
+                    ganador = "red";
                     return true;
                 }
 
-                previoH = grilla.get(x).get(index);
+                previoH = grilla.get(x).get(contador.get(realIndex) - 1);
 
             }
+            //return false;
 
+        }
+        if(modoDeJuego == 'B' || modoDeJuego == 'C'){
+            // diagonal.
+            //return false;
+        }
 
-
-
-
-
-           return false;
+            return false;
         }
 
 
