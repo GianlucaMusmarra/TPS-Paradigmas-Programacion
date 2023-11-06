@@ -159,7 +159,6 @@ public class Linea {
                 previoH = grilla.get(x).get(contador.get(realIndex) - 1);
 
             }
-            //return false;
 
         }
         if(modoDeJuego == 'B' || modoDeJuego == 'C'){
