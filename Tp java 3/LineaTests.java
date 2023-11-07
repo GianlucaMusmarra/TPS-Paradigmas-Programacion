@@ -139,6 +139,27 @@ public class LineaTests {
 
     }
 
+    @Test
+    public void azulGanaHorizontal(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+
+
+        linea.playRedAt(1);
+        linea.playBlueAt(1);
+        linea.playRedAt(2);
+        linea.playBlueAt(2);
+        linea.playRedAt(3);
+        linea.playBlueAt(3);
+        linea.playRedAt(1);
+        linea.playBlueAt(4);
+        linea.playRedAt(1);
+        linea.playBlueAt(4);
+
+        assertEquals("blue", linea.ganador);
+
+
+    }
+
 
 
 

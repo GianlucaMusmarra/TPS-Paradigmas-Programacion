@@ -88,12 +88,12 @@ public class Linea {
             for (int i = 0; i <= grilla.get(indiceColumna).size() - 1; i++) {
                 actualV = grilla.get(indiceColumna).get(i);
 
-                if (actualV == fichaPreviaV && fichaPreviaV == red) {
+                if (fichaPreviaV == red) {
                     contadorRojoV += 1;
                     contadorAzulV = 0;
 
                 }
-                if (actualV == fichaPreviaV && fichaPreviaV == blue) {
+                if (fichaPreviaV == blue) {
                     contadorAzulV += 1;
                     contadorRojoV = 0;
                 }
@@ -120,16 +120,14 @@ public class Linea {
 
             IntStream.range(0, base + 1).forEach(x -> capaDeNivel.add(verificarCasillas(x, alturaHorizontal)));
 
-            char fichaPreviaH = capaDeNivel.get(0);
-
-            for (int i = 1; i < base; i++) {
+            for (int i = 0; i < capaDeNivel.size(); i++) {
                 actualH = capaDeNivel.get(i);
 
-                if (actualH == fichaPreviaH && fichaPreviaH == red) {
+                if (actualH == red) {
                     contadorRojoH += 1;
                     contadorAzulH = 0;
                 }
-                if (actualH == fichaPreviaH && fichaPreviaH == blue) {
+                if (actualH == blue) {
                     contadorAzulH += 1;
                     contadorRojoH = 0;
                 }
@@ -140,8 +138,6 @@ public class Linea {
                 if (contadorAzulH == 4) {
                     ganador = "blue";
                 }
-
-                fichaPreviaH = actualH;
             }
 
 
@@ -155,7 +151,6 @@ public class Linea {
     }
 
     public char verificarCasillas(int columna, int alturaReal) {
-
         if (alturaReal > grilla.get(columna).size() - 1) {
             return ' ';
         } else {
