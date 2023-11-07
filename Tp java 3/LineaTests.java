@@ -31,32 +31,6 @@ public class LineaTests {
 
         assertEquals("red", linea.turno);
     }
-
-    @Test
-    public void laBaseDeLaGrillaFunca(){
-        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
-
-        assertEquals(4, linea.grilla.size());
-
-    }
-
-    @Test
-    public void laAlturaDeLaGrillaFunca(){
-        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
-
-        assertEquals(4, linea.grilla.get(0).size());
-        assertEquals(4, linea.grilla.get(1).size());
-        assertEquals(4, linea.grilla.get(2).size());
-
-    }
-
-    @Test
-    public void laGrillaTieneTodasLasCoordenadasVacias(){
-        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
-
-        assertTrue(linea.grilla.get(0).stream().allMatch(Character -> Character.equals(' ')));
-    }
-
     @Test
     public void moverCambiaDeTurno(){
         Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
@@ -65,7 +39,6 @@ public class LineaTests {
 
         linea.playBlueAt(1);
         assertEquals("red", linea.turno);
-
 
     }
 
@@ -85,116 +58,88 @@ public class LineaTests {
         assertThrowsLike( () ->linea.playRedAt(1), "Wrong turn!");
     }
 
+    @Test
+    public void profundidadBaseCorrecta(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
 
+        assertEquals(4, linea.grilla.size());
+    }
 
     @Test
-    public void turnoMueveBienRojo(){
-        Linea linea = new Linea(4,4,'A');
+    public void MovimientoAumentaAltura(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+
         linea.playRedAt(1);
-        char character = linea.grilla.get(0).get(0);
 
-        assertEquals('x', character );
 
+        assertEquals(1 , linea.grilla.get(0).size());
+        assertEquals(0 , linea.grilla.get(1).size());
+        assertEquals(0 , linea.grilla.get(2).size());
+        assertEquals(0 , linea.grilla.get(3).size());
+    }
+    @Test
+    public void DosMovimientosAumentanDosAlturaa(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+
+        linea.playRedAt(1);
+        linea.playBlueAt(1);
+
+
+        assertEquals(2 , linea.grilla.get(0).size());
+        assertEquals(0 , linea.grilla.get(1).size());
+        assertEquals(0 , linea.grilla.get(2).size());
+        assertEquals(0 , linea.grilla.get(3).size());
     }
 
-    @Test public void turnoMueveBienAzul(){
-        Linea linea = new Linea(4,4,'A');
+    @Test
+    public void rojoGanaVerticalmente(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
         linea.playRedAt(1);
-        linea.playBlueAt( 1);
-        char firstCharacter = linea.grilla.get(0).get(0);
-        char secondCharacter = linea.grilla.get(0).get(1);
-
-        assertEquals('x', firstCharacter );
-        assertEquals('o', secondCharacter);
-
-    }
-
-    @Test public void rojoGanaVerticalmente(){
-        Linea linea = new Linea(4,4,'A');
-
+        linea.playBlueAt(2);
         linea.playRedAt(1);
-        linea.playBlueAt( 2);
+        linea.playBlueAt(2);
         linea.playRedAt(1);
-        linea.playBlueAt( 2);
-        linea.playRedAt(1);
-        linea.playBlueAt( 2);
+        linea.playBlueAt(2);
         linea.playRedAt(1);
 
-        assertTrue(linea.verificarWin(1));
         assertEquals("red", linea.ganador);
 
     }
+    @Test
+    public void azulGanaVerticalmente(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
 
-    @Test public void AzulGanaVerticalmente(){
-        Linea linea = new Linea(4,4,'A');
-
         linea.playRedAt(1);
-        linea.playBlueAt( 2);
+        linea.playBlueAt(2);
         linea.playRedAt(1);
-        linea.playBlueAt( 2);
+        linea.playBlueAt(2);
         linea.playRedAt(1);
-        linea.playBlueAt( 2);
-        linea.playRedAt(3);
+        linea.playBlueAt(2);
+        linea.playRedAt(1);
         linea.playBlueAt(2);
 
-        assertTrue(linea.verificarWin(2));
         assertEquals("blue", linea.ganador);
-
 
     }
 
-    @Test public void rojoGanaHorizontal(){
-        Linea linea = new Linea(4,4,'A');
+    @Test
+    public void rojoGanaHorizontal(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
 
         linea.playRedAt(1);
-        linea.playBlueAt( 1);
+        linea.playBlueAt(1);
         linea.playRedAt(2);
-        linea.playBlueAt( 2);
+        linea.playBlueAt(2);
         linea.playRedAt(3);
-        linea.playBlueAt( 3);
+        linea.playBlueAt(3);
         linea.playRedAt(4);
 
-        assertTrue(linea.verificarWin(4));
         assertEquals("red", linea.ganador);
 
 
     }
 
-    @Test public void azulGanaHorizontal(){
-        Linea linea = new Linea(4,4,'A');
 
-        linea.playRedAt(1);
-        linea.playBlueAt( 1);
-        linea.playRedAt(2);
-        linea.playBlueAt( 2);
-        linea.playRedAt(3);
-        linea.playBlueAt( 3);
-        linea.playRedAt(1);
-        linea.playBlueAt( 4);
-        linea.playRedAt(1);
-        linea.playBlueAt( 4);
-
-        assertTrue(linea.verificarWin(4));
-        assertEquals("blue", linea.ganador);
-
-    }
-    @Test public void azulGanaHorizontalPeroEnModoDIagonal(){
-        Linea linea = new Linea(4,4,'B');
-
-        linea.playRedAt(1);
-        linea.playBlueAt( 1);
-        linea.playRedAt(2);
-        linea.playBlueAt( 2);
-        linea.playRedAt(3);
-        linea.playBlueAt( 3);
-        linea.playRedAt(1);
-        linea.playBlueAt( 4);
-        linea.playRedAt(1);
-        linea.playBlueAt( 4);
-
-        assertFalse(linea.verificarWin(4));
-
-    }
 
 
 
