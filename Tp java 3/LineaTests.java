@@ -160,7 +160,27 @@ public class LineaTests {
 
     }
 
+    @Test
+    public void rojoGanaDiagonalCreciente(){
+        Linea linea = new Linea(7, 6, 'B'); // Establecer el tamaño de la grilla y el modo de juego 'B'.
 
+        // Realiza una secuencia de movimientos para que el jugador azul gane en diagonal.
+        linea.playRedAt(1+1);
+        linea.playBlueAt(2+1);
+        linea.playRedAt(2+1);
+        linea.playBlueAt(3+1);
+        linea.playRedAt(3+1);
+        linea.playBlueAt(1+1);
+        linea.playRedAt(3+1);
+        linea.playBlueAt(4+1);
+        linea.playRedAt(4+1);
+        linea.playBlueAt(4+1);
+        linea.playRedAt(4+1);
+
+
+
+        assertEquals("red", linea.ganador);
+    }
 
 
 

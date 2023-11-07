@@ -110,12 +110,10 @@ public class Linea {
             }
 
 
-
-
             int contadorAzulH = 0;
             int contadorRojoH = 0;
             char actualH;
-            int alturaHorizontal = grilla.get(indiceColumna).size() -1;
+            int alturaHorizontal = grilla.get(indiceColumna).size() - 1;
             List<Character> capaDeNivel = new ArrayList<>(); // Specify the type of elements in the list
 
             IntStream.range(0, base + 1).forEach(x -> capaDeNivel.add(verificarCasillas(x, alturaHorizontal)));
@@ -141,21 +139,78 @@ public class Linea {
             }
 
 
-
         }
         if (modoDeJuego == 'B' || modoDeJuego == 'C') {
-            // chequeo diagonal
+            int contadorRojoD1 = 0; // Contador de fichas rojas en la diagonal creciente
+            int contadorAzulD1 = 0; // Contador de fichas azules en la diagonal creciente
+
+
+            int alturaActual = grilla.get(indiceColumna).size() - 1;
+            int baseActual = indiceColumna;
+
+
+            // para descubrir donde empieza la diagonal , (x1, y1) = (x - min(x1,y1) , y - min(x,y) )
+            // donde termina (x2 , y2) = ( x + (min(x,y) - max(x,y)) , y + (min(x,y) - max(x,y)) )
+
+            int minimo = Math.min(baseActual, alturaActual);
+            int maximo = Math.max(baseActual, alturaActual);
+
+            int baseMinima = baseActual - minimo;
+            int alturaMinima = alturaActual - minimo;
+
+            baseActual = baseMinima;
+            alturaActual = alturaMinima;
+
+
+            List<Character> capaDeNivel = new ArrayList<>();
+
+            while (baseActual <= base && alturaActual <= altura) {
+                capaDeNivel.add(verificarCasillas(baseActual, alturaActual));
+
+                baseActual++;
+                alturaActual++;
+
+            }
+
+            char actualC;
+            int contadorRojoC = 0; // Contador de fichas rojas en la diagonal creciente
+            int contadorAzulC = 0; // Contador de fichas azules en la diagonal creciente
+
+
+            for (int i = 0; i < capaDeNivel.size(); i++) {
+                actualC = capaDeNivel.get(i);
+
+                if (actualC == red) {
+                    contadorRojoC += 1;
+                    contadorAzulC = 0;
+                }
+                if (actualC == blue) {
+                    contadorAzulC += 1;
+                    contadorRojoC = 0;
+                }
+
+                if (contadorRojoC == 4) {
+                    ganador = "red";
+                }
+                if (contadorAzulC == 4) {
+                    ganador = "blue";
+                }
+
+            }
+
+            // ahora la diagonal decreciente
+
+
         }
-
-
     }
 
-    public char verificarCasillas(int columna, int alturaReal) {
-        if (alturaReal > grilla.get(columna).size() - 1) {
-            return ' ';
-        } else {
-            return grilla.get(columna).get(alturaReal);
+        public char verificarCasillas ( int columna, int alturaReal){
+            if (alturaReal > grilla.get(columna).size() - 1) {
+                return ' ';
+            } else {
+                return grilla.get(columna).get(alturaReal);
+            }
         }
     }
-}
+
 
