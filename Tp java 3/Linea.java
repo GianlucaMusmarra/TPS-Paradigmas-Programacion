@@ -33,37 +33,36 @@ public class Linea {
 
     public String show() {
 
-        System.out.print('\n');
-        System.out.print("Turno: "+ turno );
-        System.out.print('\n');
+        String impresion ="";
+
+        impresion += "\n" + "Turno: "+ turno + "\n";
 
 
         for (int i = indiceAlturaMax ; i >= 0 ; i --){
             for (int x = 0 ; x <= indiceBaseMax; x ++){
-                System.out.print("|" + fichaEnCasilla(x,i) + "| ");
+
+                impresion += "|" + fichaEnCasilla(x,i) + "| ";
             }
-            System.out.print('\n');
+
+            impresion += "\n";
         }
 
         for (int n = 1 ; n <= indiceBaseMax + 1 ; n ++){
-            System.out.print("|^| ");
-        }
-        System.out.print('\n');
 
-
-        for (int n = 1 ; n <= indiceBaseMax + 1 ; n ++){
-            System.out.print("|" + n + "| ");
+            impresion += "|^| ";
         }
+
+        impresion += "\n";
+
 
 
         if (finished()){
-            System.out.print('\n');
-            System.out.print('\n');
-            System.out.print("Resultado final: " + resultadoFinal);
-
+            impresion += "\n";
+            impresion += "\n";
+            impresion += "Resultado final: " + resultadoFinal;
         }
 
-        return "\n";
+        return impresion;
 
     }
 
