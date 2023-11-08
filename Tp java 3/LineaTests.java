@@ -287,6 +287,7 @@ public class LineaTests {
 
 
 
+
     public void assertThrowsLike (Executable executable, String message ) {
         assertEquals (message,
                 assertThrows( Exception.class, executable).getMessage() ); }
