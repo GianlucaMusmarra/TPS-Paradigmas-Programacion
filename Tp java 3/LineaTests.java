@@ -284,6 +284,76 @@ public class LineaTests {
    // falta test show
 
 
+    @Test
+    public void grillaSeImprimeCorrectamente()
+    {
+        Linea linea = new Linea(3, 3, 'C');
+        assertEquals("\n" + "Turno: "+ "red" + "\n"
+                        + "| | | | | | " + "\n"
+                        + "| | | | | | " + "\n"
+                        + "| | | | | | " + "\n"
+                        + "|^| |^| |^| " + "\n"
+
+                , linea.show());
+
+    }
+
+    @Test
+    public void fichaEnGrillaSeImprimeCorrectamente(){
+        Linea linea = new Linea(3, 3, 'C');
+        linea.playRedAt(1);
+
+
+        assertEquals("\n" + "Turno: "+ "blue" + "\n"
+                        + "| | | | | | " + "\n"
+                        + "| | | | | | " + "\n"
+                        + "|x| | | | | " + "\n"
+                        + "|^| |^| |^| " + "\n"
+
+                , linea.show());
+
+    }
+
+    @Test
+    public void fichasSeAplianCorrectamente(){
+        Linea linea = new Linea(3, 3, 'C');
+        linea.playRedAt(1);
+        linea.playBlueAt(1);
+
+
+        assertEquals("\n" + "Turno: "+ "red" + "\n"
+                        + "| | | | | | " + "\n"
+                        + "|o| | | | | " + "\n"
+                        + "|x| | | | | " + "\n"
+                        + "|^| |^| |^| " + "\n"
+
+                , linea.show());
+
+    }
+    @Test
+    public void resultadoSeImprimeCorrectamente(){
+        Linea linea = new Linea(4, 4, 'C');
+        linea.playRedAt(1);
+        linea.playBlueAt(2);
+        linea.playRedAt(1);
+        linea.playBlueAt(2);
+        linea.playRedAt(1);
+        linea.playBlueAt(2);
+        linea.playRedAt(1);
+
+        assertEquals("\n" + "Turno: "+ "blue" + "\n"
+                        + "|x| | | | | | | " + "\n"
+                        + "|x| |o| | | | | " + "\n"
+                        + "|x| |o| | | | | " + "\n"
+                        + "|x| |o| | | | | " + "\n"
+                        + "|^| |^| |^| |^| " + "\n"
+                 + "\n" + "Resultado final: " + "red"
+
+                , linea.show());
+
+    }
+
+
 
 
 

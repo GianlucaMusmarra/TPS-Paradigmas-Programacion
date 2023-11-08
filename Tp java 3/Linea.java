@@ -58,7 +58,6 @@ public class Linea {
 
         if (finished()){
             impresion += "\n";
-            impresion += "\n";
             impresion += "Resultado final: " + resultadoFinal;
         }
 
