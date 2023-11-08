@@ -6,38 +6,59 @@ public class Linea {
 
 
     List<List<Character>> grilla = new ArrayList<>();
-    private int altura;
-    private int base;
+    private int indiceAlturaMax;
+    private int indiceBaseMax;
     public String turno = "red";
     public char red = 'x';
     public char blue = 'o';
     public char modoDeJuego;
-    public String ganador;
+    public String resultadoFinal;
 
 
     public Linea(int base, int altura, char c) {
 
-        if (base < 4 || altura < 4) {
+        if (base < 1 || altura < 1) {
             throw new RuntimeException("Invalid setup.");
         }
         if (c != 'A' && c != 'B' && c != 'C') {
             throw new RuntimeException("Invalid setup.");
         }
-
+        modoDeJuego = c;
         IntStream.range(0, base).forEach(x -> grilla.add(new ArrayList()));
 
-        this.altura = altura - 1; // esta bien restar?
-        this.base = base - 1;
-        modoDeJuego = c;
+        this.indiceAlturaMax = altura - 1; // esta bien restar?
+        this.indiceBaseMax = base - 1;
     }
 
 
-    public boolean show() {
-        return true;
+    public String show() {
+
+        System.out.print("Turno: "+ turno );
+        System.out.print('\n');
+
+
+        for (int i = indiceAlturaMax ; i >= 0 ; i --){
+            for (int x = 0 ; x <= indiceBaseMax; x ++){
+                System.out.print("|" + fichaEnCasilla(x,i) + "| ");
+            }
+            System.out.print('\n');
+        }
+
+        for (int n = 1 ; n <= indiceBaseMax + 1 ; n ++){
+            System.out.print("|^| ");
+        }
+        System.out.print('\n');
+
+
+        for (int n = 1 ; n <= indiceBaseMax + 1 ; n ++){
+            System.out.print("|" + n + "| ");
+        }
+
+        return "\n";
     }
 
     public boolean finished() {
-        return ganador != null;
+        return resultadoFinal != null;
     }
 
     public void playRedAt(int columna) {
@@ -70,7 +91,7 @@ public class Linea {
 
         int realIndex = columna - 1;
 
-        if(realIndex > base || grilla.get(realIndex).size() == altura + 1){ // medio hardcodeado ese +1... qcy
+        if(realIndex > indiceBaseMax || grilla.get(realIndex).size() == indiceAlturaMax + 1){ // medio hardcodeado ese +1... qcy
             throw new RuntimeException("Out of bounds!");
         }
 
@@ -110,10 +131,10 @@ public class Linea {
                 }
 
                 if (contadorRojoV == 4) {
-                    ganador = "red";
+                    resultadoFinal = "red";
                 }
                 if (contadorAzulV == 4) {
-                    ganador = "blue";
+                    resultadoFinal = "blue";
                 }
 
                 fichaPreviaV = actualV;
@@ -127,7 +148,7 @@ public class Linea {
             int alturaHorizontal = grilla.get(indiceColumna).size() - 1;
             List<Character> capaDeNivel = new ArrayList<>(); // Specify the type of elements in the list
 
-            IntStream.range(0, base + 1).forEach(x -> capaDeNivel.add(fichaEnCasilla(x, alturaHorizontal)));
+            IntStream.range(0, indiceBaseMax + 1).forEach(x -> capaDeNivel.add(fichaEnCasilla(x, alturaHorizontal)));
 
             for (int i = 0; i < capaDeNivel.size(); i++) {
                 actualH = capaDeNivel.get(i);
@@ -146,10 +167,10 @@ public class Linea {
                 }
 
                 if (contadorRojoH == 4) {
-                    ganador = "red";
+                    resultadoFinal = "red";
                 }
                 if (contadorAzulH == 4) {
-                    ganador = "blue";
+                    resultadoFinal = "blue";
                 }
             }
 
@@ -168,7 +189,6 @@ public class Linea {
             // donde termina (x2 , y2) = ( x + (min(x,y) - max(x,y)) , y + (min(x,y) - max(x,y)) )
 
             int minimo = Math.min(baseActual, alturaActual);
-            int maximo = Math.max(baseActual, alturaActual);
 
             int baseMinima = baseActual - minimo;
             int alturaMinima = alturaActual - minimo;
@@ -179,7 +199,7 @@ public class Linea {
 
             List<Character> capaDeNivelC = new ArrayList<>();
 
-            while (baseActual <= base && alturaActual <= altura) {
+            while (baseActual <= indiceBaseMax && alturaActual <= indiceAlturaMax) {
                 capaDeNivelC.add(fichaEnCasilla(baseActual, alturaActual));
 
                 baseActual++;
@@ -209,10 +229,10 @@ public class Linea {
                 }
 
                 if (contadorRojoC == 4) {
-                    ganador = "red";
+                    resultadoFinal = "red";
                 }
                 if (contadorAzulC == 4) {
-                    ganador = "blue";
+                    resultadoFinal = "blue";
                 }
 
             }
@@ -225,14 +245,14 @@ public class Linea {
             int baseMinimaD = baseActualD;
             int alturaMinimaD = alturaActualD;
 
-            while (alturaMinimaD > 0 && baseMinimaD < altura){ // crafteo el vertice... por asi decir
+            while (alturaMinimaD > 0 && baseMinimaD < indiceAlturaMax){ // crafteo el vertice... por asi decir
                 baseMinimaD ++;
                 alturaMinimaD--;
             }
 
             List<Character> capaDeNivelD = new ArrayList<>();
 
-            while (baseMinimaD >= 0 && alturaMinimaD <= altura) {
+            while (baseMinimaD >= 0 && alturaMinimaD <= indiceAlturaMax) {
                 capaDeNivelD.add(fichaEnCasilla(baseMinimaD, alturaMinimaD));
 
                 baseMinimaD--;
@@ -257,18 +277,13 @@ public class Linea {
                 }
 
                 if (contadorRojoD == 4) {
-                    ganador = "red";
+                    resultadoFinal = "red";
                 }
                 if (contadorAzulD == 4) {
-                    ganador = "blue";
+                    resultadoFinal = "blue";
                 }
 
             }
-
-
-
-
-
 
         }
     }

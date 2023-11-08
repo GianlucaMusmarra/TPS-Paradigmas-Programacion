@@ -17,7 +17,7 @@ public class LineaTests {
     @Test
     public void invalidArguments(){
 
-        assertThrowsLike(() ->new Linea(3,3,'A'), "Invalid setup." );
+        assertThrowsLike(() ->new Linea(0,0,'A'), "Invalid setup." );
     }
     @Test
     public void invalidGameMode(){
@@ -122,7 +122,7 @@ public class LineaTests {
         linea.playBlueAt(2);
         linea.playRedAt(1);
 
-        assertEquals("red", linea.ganador);
+        assertEquals("red", linea.resultadoFinal);
         assertTrue(linea.finished());
     }
     @Test
@@ -138,7 +138,7 @@ public class LineaTests {
         linea.playRedAt(1);
         linea.playBlueAt(2);
 
-        assertEquals("blue", linea.ganador);
+        assertEquals("blue", linea.resultadoFinal);
         assertTrue(linea.finished());
     }
 
@@ -154,7 +154,7 @@ public class LineaTests {
         linea.playBlueAt(3);
         linea.playRedAt(4);
 
-        assertEquals("red", linea.ganador);
+        assertEquals("red", linea.resultadoFinal);
         assertTrue(linea.finished());
     }
 
@@ -174,7 +174,7 @@ public class LineaTests {
         linea.playRedAt(1);
         linea.playBlueAt(4);
 
-        assertEquals("blue", linea.ganador);
+        assertEquals("blue", linea.resultadoFinal);
         assertTrue(linea.finished());
     }
 
@@ -194,7 +194,7 @@ public class LineaTests {
         linea.playBlueAt(4);
         linea.playRedAt(4);
 
-        assertEquals("red", linea.ganador);
+        assertEquals("red", linea.resultadoFinal);
         assertTrue(linea.finished());
     }
 
@@ -214,7 +214,7 @@ public class LineaTests {
        linea.playBlueAt(2);
        linea.playRedAt(4);
 
-       assertEquals("red", linea.ganador);
+       assertEquals("red", linea.resultadoFinal);
        assertTrue(linea.finished());
 
    }
@@ -237,7 +237,7 @@ public class LineaTests {
        linea.playRedAt(5);
        linea.playBlueAt(5);
 
-       assertEquals("blue", linea.ganador);
+       assertEquals("blue", linea.resultadoFinal);
        assertTrue(linea.finished());
    }
 
@@ -259,7 +259,7 @@ public class LineaTests {
        linea.playRedAt(2);
        linea.playBlueAt(2);
 
-       assertEquals("blue", linea.ganador);
+       assertEquals("blue", linea.resultadoFinal);
        assertTrue(linea.finished());
    }
 
