@@ -33,6 +33,7 @@ public class Linea {
 
     public String show() {
 
+        System.out.print('\n');
         System.out.print("Turno: "+ turno );
         System.out.print('\n');
 
@@ -54,7 +55,16 @@ public class Linea {
             System.out.print("|" + n + "| ");
         }
 
+
+        if (finished()){
+            System.out.print('\n');
+            System.out.print('\n');
+            System.out.print("Resultado final: " + resultadoFinal);
+
+        }
+
         return "\n";
+
     }
 
     public boolean finished() {
@@ -103,24 +113,37 @@ public class Linea {
     }
 
     public void verificarWin(int indiceColumna) {
-        // chequeo vertical
 
+        // chequeo empate
+
+        boolean empate = true;
+
+        for(int i = 0 ; i <= indiceBaseMax ; i++){
+            if (!(grilla.get(i).size() == indiceAlturaMax + 1)){
+                 empate = false;
+            }
+        }
+        if(empate){
+            resultadoFinal = "Tablas";
+        }
+
+
+        // chequeo vertical
 
         if (modoDeJuego == 'A' || modoDeJuego == 'C') {
             int contadorAzulV = 0;
             int contadorRojoV = 0;
             int actualV;
-            int fichaPreviaV = grilla.get(indiceColumna).get(0);
 
             for (int i = 0; i <= grilla.get(indiceColumna).size() - 1; i++) {
                 actualV = grilla.get(indiceColumna).get(i);
 
-                if (fichaPreviaV == red) {
+                if (actualV == red) {
                     contadorRojoV += 1;
                     contadorAzulV = 0;
 
                 }
-                else if (fichaPreviaV == blue) {
+                else if (actualV == blue) {
                     contadorAzulV += 1;
                     contadorRojoV = 0;
                 }
@@ -136,8 +159,6 @@ public class Linea {
                 if (contadorAzulV == 4) {
                     resultadoFinal = "blue";
                 }
-
-                fichaPreviaV = actualV;
 
             }
 

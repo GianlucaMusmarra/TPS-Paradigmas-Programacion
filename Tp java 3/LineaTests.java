@@ -263,6 +263,27 @@ public class LineaTests {
        assertTrue(linea.finished());
    }
 
+   @Test
+   public void ningunoGana(){
+
+       Linea linea = new Linea(3, 3, 'C');
+       linea.playRedAt(1);
+       linea.playBlueAt(1);
+       linea.playRedAt(1);
+       linea.playBlueAt(2);
+       linea.playRedAt(2);
+       linea.playBlueAt(2);
+       linea.playRedAt(3);
+       linea.playBlueAt(3);
+       linea.playRedAt(3);
+
+       assertEquals("Tablas", linea.resultadoFinal);
+       assertTrue(linea.finished());
+   }
+
+   // falta test show
+
+
 
 
 
