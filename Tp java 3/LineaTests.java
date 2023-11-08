@@ -92,6 +92,26 @@ public class LineaTests {
     }
 
     @Test
+    public void excedeLimiteVertical(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+
+        linea.playRedAt(1);
+        linea.playBlueAt(1);
+        linea.playRedAt(1);
+        linea.playBlueAt(1);
+
+        assertThrowsLike(()->linea.playRedAt(1), "Out of bounds!");
+
+    }
+    @Test
+    public void excedeLimiteHorizontal(){
+        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+
+        assertThrowsLike(()->linea.playRedAt(5), "Out of bounds!");
+
+    }
+
+    @Test
     public void rojoGanaVerticalmente(){
         Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
         linea.playRedAt(1);
@@ -103,7 +123,7 @@ public class LineaTests {
         linea.playRedAt(1);
 
         assertEquals("red", linea.ganador);
-
+        assertTrue(linea.finished());
     }
     @Test
     public void azulGanaVerticalmente(){
@@ -119,7 +139,7 @@ public class LineaTests {
         linea.playBlueAt(2);
 
         assertEquals("blue", linea.ganador);
-
+        assertTrue(linea.finished());
     }
 
     @Test
@@ -135,8 +155,7 @@ public class LineaTests {
         linea.playRedAt(4);
 
         assertEquals("red", linea.ganador);
-
-
+        assertTrue(linea.finished());
     }
 
     @Test
@@ -156,31 +175,93 @@ public class LineaTests {
         linea.playBlueAt(4);
 
         assertEquals("blue", linea.ganador);
-
-
+        assertTrue(linea.finished());
     }
 
     @Test
     public void rojoGanaDiagonalCreciente(){
-        Linea linea = new Linea(7, 6, 'B'); // Establecer el tamaño de la grilla y el modo de juego 'B'.
+        Linea linea = new Linea(4, 4, 'B');
 
-        // Realiza una secuencia de movimientos para que el jugador azul gane en diagonal.
-        linea.playRedAt(1+1);
-        linea.playBlueAt(2+1);
-        linea.playRedAt(2+1);
-        linea.playBlueAt(3+1);
-        linea.playRedAt(3+1);
-        linea.playBlueAt(1+1);
-        linea.playRedAt(3+1);
-        linea.playBlueAt(4+1);
-        linea.playRedAt(4+1);
-        linea.playBlueAt(4+1);
-        linea.playRedAt(4+1);
-
-
+        linea.playRedAt(1);
+        linea.playBlueAt(2);
+        linea.playRedAt(2);
+        linea.playBlueAt(3);
+        linea.playRedAt(3);
+        linea.playBlueAt(1);
+        linea.playRedAt(3);
+        linea.playBlueAt(4);
+        linea.playRedAt(4);
+        linea.playBlueAt(4);
+        linea.playRedAt(4);
 
         assertEquals("red", linea.ganador);
+        assertTrue(linea.finished());
     }
+
+   @Test
+   public void rojoGanaDiagonalDecreciente(){
+       Linea linea = new Linea(4, 4, 'B');
+
+       linea.playRedAt(1);
+       linea.playBlueAt(2);
+       linea.playRedAt(1);
+       linea.playBlueAt(1);
+       linea.playRedAt(1);
+       linea.playBlueAt(2);
+       linea.playRedAt(2);
+       linea.playBlueAt(3);
+       linea.playRedAt(3);
+       linea.playBlueAt(2);
+       linea.playRedAt(4);
+
+       assertEquals("red", linea.ganador);
+       assertTrue(linea.finished());
+
+   }
+
+   @Test
+   public void azulGanaDiagonalCreciente(){
+
+       Linea linea = new Linea(5, 5, 'B');
+
+       linea.playRedAt(1);
+       linea.playBlueAt(2);
+       linea.playRedAt(3);
+       linea.playBlueAt(3);
+       linea.playRedAt(4);
+       linea.playBlueAt(4);
+       linea.playRedAt(1);
+       linea.playBlueAt(4);
+       linea.playRedAt(5);
+       linea.playBlueAt(5);
+       linea.playRedAt(5);
+       linea.playBlueAt(5);
+
+       assertEquals("blue", linea.ganador);
+       assertTrue(linea.finished());
+   }
+
+   @Test
+   public void azulGanaDiagonalDecreciente(){
+       Linea linea = new Linea(5, 5, 'B');
+       linea.playRedAt(2);
+       linea.playBlueAt(1);
+       linea.playRedAt(4);
+       linea.playBlueAt(5);
+       linea.playRedAt(3);
+       linea.playBlueAt(4);
+       linea.playRedAt(1);
+       linea.playBlueAt(3);
+       linea.playRedAt(1);
+       linea.playBlueAt(3);
+       linea.playRedAt(1);
+       linea.playBlueAt(2);
+       linea.playRedAt(2);
+       linea.playBlueAt(2);
+
+       assertEquals("blue", linea.ganador);
+       assertTrue(linea.finished());
+   }
 
 
 

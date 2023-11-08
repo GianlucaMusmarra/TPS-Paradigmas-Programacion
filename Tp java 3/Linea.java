@@ -37,7 +37,7 @@ public class Linea {
     }
 
     public boolean finished() {
-        return false;
+        return ganador != null;
     }
 
     public void playRedAt(int columna) {
@@ -66,7 +66,13 @@ public class Linea {
     }
 
     public void introduceMovement(int columna, char ficha) {
+
+
         int realIndex = columna - 1;
+
+        if(realIndex > base || grilla.get(realIndex).size() == altura + 1){ // medio hardcodeado ese +1... qcy
+            throw new RuntimeException("Out of bounds!");
+        }
 
         grilla.get(realIndex).add(ficha);
 
@@ -93,8 +99,13 @@ public class Linea {
                     contadorAzulV = 0;
 
                 }
-                if (fichaPreviaV == blue) {
+                else if (fichaPreviaV == blue) {
                     contadorAzulV += 1;
+                    contadorRojoV = 0;
+                }
+
+                else{
+                    contadorAzulV = 0;
                     contadorRojoV = 0;
                 }
 
@@ -116,7 +127,7 @@ public class Linea {
             int alturaHorizontal = grilla.get(indiceColumna).size() - 1;
             List<Character> capaDeNivel = new ArrayList<>(); // Specify the type of elements in the list
 
-            IntStream.range(0, base + 1).forEach(x -> capaDeNivel.add(verificarCasillas(x, alturaHorizontal)));
+            IntStream.range(0, base + 1).forEach(x -> capaDeNivel.add(fichaEnCasilla(x, alturaHorizontal)));
 
             for (int i = 0; i < capaDeNivel.size(); i++) {
                 actualH = capaDeNivel.get(i);
@@ -125,9 +136,13 @@ public class Linea {
                     contadorRojoH += 1;
                     contadorAzulH = 0;
                 }
-                if (actualH == blue) {
+                else if (actualH == blue) {
                     contadorAzulH += 1;
                     contadorRojoH = 0;
+                }
+                else{
+                    contadorRojoH = 0;
+                    contadorAzulH = 0;
                 }
 
                 if (contadorRojoH == 4) {
@@ -141,8 +156,8 @@ public class Linea {
 
         }
         if (modoDeJuego == 'B' || modoDeJuego == 'C') {
-            int contadorRojoD1 = 0; // Contador de fichas rojas en la diagonal creciente
-            int contadorAzulD1 = 0; // Contador de fichas azules en la diagonal creciente
+
+            // diagonal creciente
 
 
             int alturaActual = grilla.get(indiceColumna).size() - 1;
@@ -162,10 +177,10 @@ public class Linea {
             alturaActual = alturaMinima;
 
 
-            List<Character> capaDeNivel = new ArrayList<>();
+            List<Character> capaDeNivelC = new ArrayList<>();
 
             while (baseActual <= base && alturaActual <= altura) {
-                capaDeNivel.add(verificarCasillas(baseActual, alturaActual));
+                capaDeNivelC.add(fichaEnCasilla(baseActual, alturaActual));
 
                 baseActual++;
                 alturaActual++;
@@ -177,15 +192,19 @@ public class Linea {
             int contadorAzulC = 0; // Contador de fichas azules en la diagonal creciente
 
 
-            for (int i = 0; i < capaDeNivel.size(); i++) {
-                actualC = capaDeNivel.get(i);
+            for (int i = 0; i < capaDeNivelC.size(); i++) {
+                actualC = capaDeNivelC.get(i);
 
                 if (actualC == red) {
                     contadorRojoC += 1;
                     contadorAzulC = 0;
                 }
-                if (actualC == blue) {
+                else if (actualC == blue) {
                     contadorAzulC += 1;
+                    contadorRojoC = 0;
+                }
+                else{
+                    contadorAzulC = 0;
                     contadorRojoC = 0;
                 }
 
@@ -200,11 +219,61 @@ public class Linea {
 
             // ahora la diagonal decreciente
 
+            int alturaActualD = grilla.get(indiceColumna).size() - 1;
+            int baseActualD = indiceColumna;
+
+            int baseMinimaD = baseActualD;
+            int alturaMinimaD = alturaActualD;
+
+            while (alturaMinimaD > 0 && baseMinimaD < altura){ // crafteo el vertice... por asi decir
+                baseMinimaD ++;
+                alturaMinimaD--;
+            }
+
+            List<Character> capaDeNivelD = new ArrayList<>();
+
+            while (baseMinimaD >= 0 && alturaMinimaD <= altura) {
+                capaDeNivelD.add(fichaEnCasilla(baseMinimaD, alturaMinimaD));
+
+                baseMinimaD--;
+                alturaMinimaD++;
+
+            }
+
+            char actualD;
+            int contadorRojoD = 0; // Contador de fichas rojas en la diagonal decreciente
+            int contadorAzulD = 0; // Contador de fichas azules en la diagonal decreciente
+
+            for (int i = 0; i < capaDeNivelD.size(); i++) {
+                actualD = capaDeNivelD.get(i);
+
+                if (actualD == red) {
+                    contadorRojoD += 1;
+                    contadorAzulD = 0;
+                }
+                if (actualD == blue) {
+                    contadorAzulD += 1;
+                    contadorRojoD = 0;
+                }
+
+                if (contadorRojoD == 4) {
+                    ganador = "red";
+                }
+                if (contadorAzulD == 4) {
+                    ganador = "blue";
+                }
+
+            }
+
+
+
+
+
 
         }
     }
 
-        public char verificarCasillas ( int columna, int alturaReal){
+        public char fichaEnCasilla(int columna, int alturaReal){ // aca no hace falta sacar los ifs
             if (alturaReal > grilla.get(columna).size() - 1) {
                 return ' ';
             } else {
