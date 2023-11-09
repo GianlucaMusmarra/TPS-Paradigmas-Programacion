@@ -47,28 +47,28 @@ public class Linea {
 
     public String show() {
 
-        StringBuilder impresion =new StringBuilder();
-        impresion.append("\n" + "Turno: "+ turno.get(0).toString() + "\n");
+        StringBuilder impression =new StringBuilder();
+        impression.append("\n" + "Turno: ").append(turno.get(0).toString()).append("\n");
 
         IntStream.range(0,indiceAlturaMax+1)
                 .mapToObj(i -> indiceAlturaMax - i)
                 .forEach(i-> {
             IntStream.range(0,indiceAlturaMax+1).forEach(x ->{
-                impresion.append("|" + fichaEnCasilla(x,i) + "| ");
+                impression.append("|").append(fichaEnCasilla(x, i)).append("| ");
             });
 
-            impresion.append("\n");
+            impression.append("\n");
         });
 
 
         IntStream.range(0,indiceAlturaMax+1).forEach(e ->
-                impresion.append("|^| ")
+                impression.append("|^| ")
         );
-        impresion.append("\n");
+        impression.append("\n");
 
-        impresion.append(resultadoFinal.get(0).printFinalResult());
+        impression.append(resultadoFinal.get(0).printFinalResult());
 
-        return impresion.toString();
+        return impression.toString();
     }
 
     public boolean finished() {
