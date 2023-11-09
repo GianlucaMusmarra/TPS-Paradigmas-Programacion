@@ -29,16 +29,16 @@ public class LineaTests {
     public void redAlwaysStart(){
         Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
 
-        assertEquals("red", linea.turno);
+        assertEquals("red", linea.getCurrentTurn());
     }
     @Test
     public void moverCambiaDeTurno(){
         Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
         linea.playRedAt(1);
-        assertEquals("blue", linea.turno);
+        assertEquals("blue", linea.getCurrentTurn());
 
         linea.playBlueAt(1);
-        assertEquals("red", linea.turno);
+        assertEquals("red", linea.getCurrentTurn());
 
     }
 
@@ -122,7 +122,7 @@ public class LineaTests {
         linea.playBlueAt(2);
         linea.playRedAt(1);
 
-        assertEquals("red", linea.resultadoFinal);
+        assertEquals("red", linea.getFinalResult());
         assertTrue(linea.finished());
     }
     @Test
@@ -138,7 +138,7 @@ public class LineaTests {
         linea.playRedAt(1);
         linea.playBlueAt(2);
 
-        assertEquals("blue", linea.resultadoFinal);
+        assertEquals("blue", linea.getFinalResult());
         assertTrue(linea.finished());
     }
 
@@ -154,7 +154,7 @@ public class LineaTests {
         linea.playBlueAt(3);
         linea.playRedAt(4);
 
-        assertEquals("red", linea.resultadoFinal);
+        assertEquals("red", linea.getFinalResult());
         assertTrue(linea.finished());
     }
 
@@ -174,7 +174,7 @@ public class LineaTests {
         linea.playRedAt(1);
         linea.playBlueAt(4);
 
-        assertEquals("blue", linea.resultadoFinal);
+        assertEquals("blue", linea.getFinalResult());
         assertTrue(linea.finished());
     }
 
@@ -194,7 +194,7 @@ public class LineaTests {
         linea.playBlueAt(4);
         linea.playRedAt(4);
 
-        assertEquals("red", linea.resultadoFinal);
+        assertEquals("red", linea.getFinalResult());
         assertTrue(linea.finished());
     }
 
@@ -214,7 +214,7 @@ public class LineaTests {
        linea.playBlueAt(2);
        linea.playRedAt(4);
 
-       assertEquals("red", linea.resultadoFinal);
+       assertEquals("red", linea.getFinalResult());
        assertTrue(linea.finished());
 
    }
@@ -237,7 +237,7 @@ public class LineaTests {
        linea.playRedAt(5);
        linea.playBlueAt(5);
 
-       assertEquals("blue", linea.resultadoFinal);
+       assertEquals("blue", linea.getFinalResult());
        assertTrue(linea.finished());
    }
 
@@ -259,7 +259,7 @@ public class LineaTests {
        linea.playRedAt(2);
        linea.playBlueAt(2);
 
-       assertEquals("blue", linea.resultadoFinal);
+       assertEquals("blue", linea.getFinalResult());
        assertTrue(linea.finished());
    }
 
@@ -277,7 +277,7 @@ public class LineaTests {
        linea.playBlueAt(3);
        linea.playRedAt(3);
 
-       assertEquals("Tablas", linea.resultadoFinal);
+       assertEquals("tie", linea.getFinalResult());
        assertTrue(linea.finished());
    }
 
@@ -295,7 +295,6 @@ public class LineaTests {
                         + "|^| |^| |^| " + "\n"
 
                 , linea.show());
-
     }
 
     @Test
@@ -304,14 +303,16 @@ public class LineaTests {
         linea.playRedAt(1);
 
 
-        assertEquals("\n" + "Turno: "+ "blue" + "\n"
-                        + "| | | | | | " + "\n"
-                        + "| | | | | | " + "\n"
-                        + "|x| | | | | " + "\n"
-                        + "|^| |^| |^| " + "\n"
+        assertEquals("""
+
+                        Turno: blue
+                        | | | | | |\s
+                        | | | | | |\s
+                        |x| | | | |\s
+                        |^| |^| |^|\s
+                        """
 
                 , linea.show());
-
     }
 
     @Test
@@ -328,7 +329,6 @@ public class LineaTests {
                         + "|^| |^| |^| " + "\n"
 
                 , linea.show());
-
     }
     @Test
     public void resultadoSeImprimeCorrectamente(){
