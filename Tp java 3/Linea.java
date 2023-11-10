@@ -9,7 +9,7 @@ public class Linea {
     public LinkedList<ListBounds> maxHeightBounds = new LinkedList<>(List.of(new ListBoundOut()));
     public LinkedList<ListBounds> maxBaseBounds = new LinkedList<>(List.of(new ListBoundOut()));
 
-    public LinkedList<Turno> turno = new LinkedList<>(Arrays.asList(new TurnoRed(),new TurnoBlue()));
+    public LinkedList<Turn> turno = new LinkedList<>(Arrays.asList(new TurnRed(),new TurnBlue()));
 
     public char red = 'x';
     public char blue = 'o';

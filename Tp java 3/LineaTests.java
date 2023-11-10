@@ -110,7 +110,7 @@ public class LineaTests {
     }
 
     @Test
-    public void excedeLimiteHorizontalNegativo(){
+    public void exceedsHorizontalLimitNegative(){
         Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
 
         assertThrowsLike(()->linea.playRedAt(-5), "Out of bounds!");
