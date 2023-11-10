@@ -16,7 +16,7 @@ public class LineaTests {
     }
     @Test
     public void invalidArguments(){
-        assertThrowsLike(() ->new Linea(0,0,'A'), "Invalid setup! Too small!" );
+        assertThrowsLike(() ->new MatchLine(0,0,'A'), "Invalid setup! Too small!" );
         assertThrowsLike(() ->new MatchLine(0,0,'A'), "Invalid setup." );
     }
     @Test
@@ -111,7 +111,7 @@ public class LineaTests {
 
     @Test
     public void exceedsHorizontalLimitNegative(){
-        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+        MatchLine linea = new MatchLine(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
 
         assertThrowsLike(()->linea.playRedAt(-5), "Out of bounds!");
 
@@ -119,7 +119,7 @@ public class LineaTests {
 
     @Test
     public void rojoGanaVerticalmente(){
-        Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+        MatchLine linea = new MatchLine(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
         linea.playRedAt(1);
         linea.playBlueAt(2);
         linea.playRedAt(1);
