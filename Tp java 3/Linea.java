@@ -181,27 +181,28 @@ public class Linea {
     }
 
     public void checkWinInList(List<Character> levelLayer){
-        char actualC;
-        int contadorRojoC = 0; // Contador de fichas rojas en la diagonal creciente
-        int contadorAzulC = 0; // Contador de fichas azules en la diagonal creciente
-        for (Character character : levelLayer) {
-            actualC = character;
-            if (actualC == red) {
-                contadorRojoC += 1;
-                contadorAzulC = 0;
-            } else if (actualC == blue) {
-                contadorAzulC += 1;
-                contadorRojoC = 0;
+        char[] actualC = {'p'};
+        int[] contadorRojoC = {0};
+        int[] contadorAzulC = {0};
+
+        levelLayer.stream().forEach(character->{
+            actualC[0] = character;
+            if (actualC[0] == red) {
+                contadorRojoC[0]++;
+                contadorAzulC[0] = 0;
+            } else if (actualC[0] == blue) {
+                contadorAzulC[0]++;
+                contadorRojoC[0] = 0;
             } else {
-                contadorAzulC = 0;
-                contadorRojoC = 0;
+                contadorAzulC[0] = 0;
+                contadorRojoC[0] = 0;
             }
-            if (contadorRojoC == 4) {
+            if (contadorRojoC[0] == 4) {
                 finalResult.addFirst(new FinalResultRed());
             }
-            if (contadorAzulC == 4) {
+            if (contadorAzulC[0] == 4) {
                 finalResult.addFirst(new FinalResultBlue());
             }
-        }
+        });
     }
 }
