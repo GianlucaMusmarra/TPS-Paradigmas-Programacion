@@ -1,47 +1,49 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Linea {
 
-
     List<List<Character>> grilla = new ArrayList<>();
-    private final int indiceAlturaMax;
-    private final int indiceBaseMax;
 
-    public LinkedList<Turno> turno = new LinkedList<>();
+    public LinkedList<ListBounds> maxHeightBounds = new LinkedList<>(List.of(new ListBoundOut()));
+    public LinkedList<ListBounds> maxBaseBounds = new LinkedList<>(List.of(new ListBoundOut()));
+
+    public LinkedList<Turno> turno = new LinkedList<>(Arrays.asList(new TurnoRed(),new TurnoBlue()));
+
     public char red = 'x';
     public char blue = 'o';
 
     public char gameMode;
     public LinkedList<GameMode> allGameModes = new LinkedList<>();
 
-    public LinkedList<FinalResult> resultadoFinal = new LinkedList<>();
-    public String getFinalResult(){return resultadoFinal.get(0).toString();}
+    public LinkedList<FinalResult> finalResult = new LinkedList<>();
+    public String getFinalResult(){return finalResult.get(0).toString();}
 
     public Linea(int base, int altura, char c) {
-        turno.add(new TurnoRed());
-        turno.add(new TurnoBlue());
 
-        if (base < 1 || altura < 1) {
-            throw new RuntimeException("Invalid setup.");
-        }
+        IntStream.range(0,altura).forEach(i -> maxHeightBounds.addFirst(new ListBoundIn()));
+        IntStream.range(0,altura).forEach(i -> maxBaseBounds.addFirst(new ListBoundIn()));
 
-        allGameModes.add(new GameModeC());
-        allGameModes.add(new GameModeB());
+        maxHeightBounds.get(0).checkBoundTooSmall();
+        maxBaseBounds.get(0).checkBoundTooSmall();
+
         allGameModes.add(new GameModeA());
-        if (allGameModes.stream().noneMatch(gameMode->gameMode.isGameMode(c))) {
-            throw new RuntimeException("Invalid setup.");
-        }
+        allGameModes.add(new GameModeB());
+        allGameModes.add(new GameModeC());
+
+        allGameModes = allGameModes.stream()
+                .filter(gm -> gm.isGameMode(c))
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        allGameModes.addLast(new GameModeNone());
+        allGameModes.getFirst().isGameMode(c);
+
         gameMode = c;
 
-        resultadoFinal.add(new FinalResultNone());
+        finalResult.add(new FinalResultNone());
 
         IntStream.range(0, base).forEach(x -> grilla.add(new ArrayList<>()));
-
-        this.indiceAlturaMax = altura - 1;
-        this.indiceBaseMax = base - 1;
     }
 
 
@@ -50,10 +52,10 @@ public class Linea {
         StringBuilder impression =new StringBuilder();
         impression.append("\n" + "Turno: ").append(turno.get(0).toString()).append("\n");
 
-        IntStream.range(0,indiceAlturaMax+1)
-                .mapToObj(i -> indiceAlturaMax - i)
+        IntStream.range(0,maxHeightBounds.size()-1)
+                .mapToObj(i -> maxHeightBounds.size()-2 - i)
                 .forEach(i-> {
-            IntStream.range(0,indiceAlturaMax+1).forEach(x ->{
+            IntStream.range(0,maxHeightBounds.size()-1).forEach(x ->{
                 impression.append("|").append(fichaEnCasilla(x, i)).append("| ");
             });
 
@@ -61,29 +63,29 @@ public class Linea {
         });
 
 
-        IntStream.range(0,indiceAlturaMax+1).forEach(e ->
+        IntStream.range(0,maxHeightBounds.size()-1).forEach(e ->
                 impression.append("|^| ")
         );
         impression.append("\n");
 
-        impression.append(resultadoFinal.get(0).printFinalResult());
+        impression.append(finalResult.get(0).printFinalResult());
 
         return impression.toString();
     }
 
     public boolean finished() {
-        return !(resultadoFinal.get(0) instanceof FinalResultNone);
+        return !(finalResult.get(0) instanceof FinalResultNone);
     }
 
-    public void playRedAt(int columna) {
+    public void playRedAt(int column) {
         turno.get(0).PlayRed();
-        introduceMovement(columna, red);
+        introduceMovement(column, red);
         turno.addFirst(turno.removeLast());
     }
 
-    public void playBlueAt(int columna) {
+    public void playBlueAt(int column) {
         turno.get(0).PlayBlue();
-        introduceMovement(columna, blue);
+        introduceMovement(column, blue);
         turno.addFirst(turno.removeLast());
     }
 
@@ -91,155 +93,103 @@ public class Linea {
         return turno.get(0).toString();
     }
 
-    public void introduceMovement(int columna, char ficha) {
+    public void introduceMovement(int column, char ficha) {
 
+        int realIndex = column - 1;
 
-        int realIndex = columna - 1;
+        int index = (realIndex % maxBaseBounds.size() + maxBaseBounds.size()) % maxBaseBounds.size();
+        maxBaseBounds.get(index).checkBound();
 
-        if(realIndex > indiceBaseMax || grilla.get(realIndex).size() == indiceAlturaMax + 1){ // medio hardcodeado ese +1... qcy
-            throw new RuntimeException("Out of bounds!");
-        }
+        int index2 = (grilla.get(realIndex).size() % maxHeightBounds.size() + maxHeightBounds.size()) % maxHeightBounds.size();
+        maxHeightBounds.get(index2).checkBound();
 
         grilla.get(realIndex).add(ficha);
 
-        verificarWin(realIndex); // le paso donde fue el ultimo movimiento
+        checkWin(realIndex);
     }
 
-    public void verificarWin(int indiceColumna) {
+    public void checkWin(int columnIndex) {
 
-        resultadoFinal.addFirst(new FinalResultTie());
-        IntStream.range(0, indiceBaseMax + 1).filter(i -> grilla.get(i).size() != indiceAlturaMax + 1)
-                .forEach(e -> resultadoFinal.addFirst(new FinalResultNone()));
+        finalResult.addFirst(new FinalResultTie());
+        IntStream.range(0, maxBaseBounds.size()-1).filter(i -> grilla.get(i).size() != maxHeightBounds.size()-1)
+                .forEach(e -> finalResult.addFirst(new FinalResultNone()));
 
-        if (gameMode == 'A' || gameMode == 'C') {
-            int[] contadorAzulV = {0};
-            int[] contadorRojoV = {0};
+        allGameModes.get(0).checkModeWins(this, columnIndex);
+    }
 
-            grilla.get(indiceColumna).forEach(actualV -> {
-                if (actualV == red) {
-                    contadorRojoV[0]++;
-                    contadorAzulV[0] = 0;
-                } else if (actualV == blue) {
-                    contadorAzulV[0]++;
-                    contadorRojoV[0] = 0;
-                } else {
-                    contadorAzulV[0] = 0;
-                    contadorRojoV[0] = 0;
-                }
+    public void checkAModeWin(int columnIndex){
+        checkWinInList(grilla.get(columnIndex));
+
+        int alturaHorizontal = grilla.get(columnIndex).size() - 1;
+        List<Character> capaDeNivel = new ArrayList<>();
+
+        IntStream.range(0, maxBaseBounds.size()-1).forEach(x -> capaDeNivel.add(fichaEnCasilla(x, alturaHorizontal)));
+
+        checkWinInList(capaDeNivel);
+    }
+
+    public void checkBModeWin(int columnIndex){
+        int alturaActual = grilla.get(columnIndex).size() - 1;
+        int baseActual = columnIndex;
+
+        int minimo = Math.min(baseActual, alturaActual);
+
+        int baseMinima = baseActual - minimo;
+        int alturaMinima = alturaActual - minimo;
+
+
+        int[] actualIndexes = {baseMinima, alturaMinima};
+
+        List<Character> capaDeNivelC = new ArrayList<>();
+
+        IntStream.range(0, Math.min(maxBaseBounds.size() - actualIndexes[0]-1, maxHeightBounds.size() - actualIndexes[1]))
+                .forEach(i -> capaDeNivelC.add(fichaEnCasilla(actualIndexes[0] + i, actualIndexes[1] + i)));
+
+        checkWinInList(capaDeNivelC);
+
+        int heightActualD = grilla.get(columnIndex).size() - 1;
+
+
+        int[] actualIndexes2 = {columnIndex, heightActualD};
+
+        IntStream.iterate(0, i -> actualIndexes2[1] > 0 && actualIndexes2[0] < maxHeightBounds.size() - 2, i -> i + 1)
+                .forEach(i -> {
+                    actualIndexes2[0]++;
+                    actualIndexes2[1]--;
+                });
+
+        List<Character> capaDeNivelD = new ArrayList<>();
+
+        IntStream.iterate(actualIndexes2[0], i -> i >= 0 && actualIndexes2[1] < maxHeightBounds.size(), i -> i - 1)
+                .forEach(i -> {
+                    capaDeNivelD.add(fichaEnCasilla(i, actualIndexes2[1]));
+
+                    actualIndexes2[1]++;
+                });
+
+        checkWinInList(capaDeNivelD);
+    }
+
+    public char fichaEnCasilla(int column, int alturaReal){
+        return IntStream.range(0, 1)
+                .filter(i -> alturaReal < grilla.get(column).size())
+                .mapToObj(i -> grilla.get(column).get(alturaReal))
+                .findFirst()
+                .orElse(' ');
+    }
+
+    public void checkWinInList(List<Character> capaDeNivel){
+        Map<Character, Integer> counters = new HashMap<>();
+        counters.put(red, 0);
+        counters.put(blue, 0);
+
+        capaDeNivel.stream().forEach(character -> {
+            counters.compute(character, (key, count) -> (count != null) ? count + 1 : 0);
+            counters.forEach((color, count) -> {
+                counters.entrySet().stream()
+                        .filter(entry -> entry.getValue() == 4)
+                        .forEach(entry -> finalResult.addFirst(entry.getKey() == red ? new FinalResultRed() : new FinalResultBlue()));
             });
-
-            if (contadorRojoV[0] == 4) {
-                resultadoFinal.addFirst(new FinalResultRed());
-            }
-            if (contadorAzulV[0] == 4) {
-                resultadoFinal.addFirst(new FinalResultBlue());
-            }
-
-            int alturaHorizontal = grilla.get(indiceColumna).size() - 1;
-            List<Character> capaDeNivel = new ArrayList<>(); // Specify the type of elements in the list
-
-            IntStream.range(0, indiceBaseMax + 1).forEach(x -> capaDeNivel.add(fichaEnCasilla(x, alturaHorizontal)));
-
-            checkWin(capaDeNivel);
-
-
-        }
-        if (gameMode == 'B' || gameMode == 'C') {
-
-            // diagonal creciente
-
-
-            int alturaActual = grilla.get(indiceColumna).size() - 1;
-            int baseActual = indiceColumna;
-
-
-            // para descubrir donde empieza la diagonal , (x1, y1) = (x - min(x1,y1) , y - min(x,y) )
-            // donde termina (x2 , y2) = ( x + (min(x,y) - max(x,y)) , y + (min(x,y) - max(x,y)) )
-
-            int minimo = Math.min(baseActual, alturaActual);
-
-            int baseMinima = baseActual - minimo;
-            int alturaMinima = alturaActual - minimo;
-
-            baseActual = baseMinima;
-            alturaActual = alturaMinima;
-
-
-            List<Character> capaDeNivelC = new ArrayList<>();
-
-            while (baseActual <= indiceBaseMax && alturaActual <= indiceAlturaMax) {
-                capaDeNivelC.add(fichaEnCasilla(baseActual, alturaActual));
-
-                baseActual++;
-                alturaActual++;
-
-            }
-
-            checkWin(capaDeNivelC);
-
-            // ahora la diagonal decreciente
-
-            int alturaActualD = grilla.get(indiceColumna).size() - 1;
-
-            int baseMinimaD = indiceColumna;
-            int alturaMinimaD = alturaActualD;
-
-            while (alturaMinimaD > 0 && baseMinimaD < indiceAlturaMax){ // crafteo el vertice... por asi decir
-                baseMinimaD ++;
-                alturaMinimaD--;
-            }
-
-            List<Character> capaDeNivelD = new ArrayList<>();
-
-            while (baseMinimaD >= 0 && alturaMinimaD <= indiceAlturaMax) {
-                capaDeNivelD.add(fichaEnCasilla(baseMinimaD, alturaMinimaD));
-
-                baseMinimaD--;
-                alturaMinimaD++;
-
-            }
-
-            checkWin(capaDeNivelD);
-        }
+        });
     }
-
-        public char fichaEnCasilla(int columna, int alturaReal){ // aca no hace falta sacar los ifs
-            if (alturaReal > grilla.get(columna).size() - 1) {
-                return ' ';
-            } else {
-                return grilla.get(columna).get(alturaReal);
-            }
-        }
-
-        public void checkWin(List<Character> capaDeNivel){
-            char actualC;
-            int contadorRojoC = 0; // Contador de fichas rojas en la diagonal creciente
-            int contadorAzulC = 0; // Contador de fichas azules en la diagonal creciente
-
-
-            for (Character character : capaDeNivel) {
-                actualC = character;
-
-                if (actualC == red) {
-                    contadorRojoC += 1;
-                    contadorAzulC = 0;
-                } else if (actualC == blue) {
-                    contadorAzulC += 1;
-                    contadorRojoC = 0;
-                } else {
-                    contadorAzulC = 0;
-                    contadorRojoC = 0;
-                }
-
-                if (contadorRojoC == 4) {
-                    resultadoFinal.addFirst(new FinalResultRed());
-                }
-                if (contadorAzulC == 4) {
-                    resultadoFinal.addFirst(new FinalResultBlue());
-                }
-
-            }
-        }
-    }
-
-
+}

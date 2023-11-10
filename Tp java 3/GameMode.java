@@ -1,12 +1,11 @@
+
 public abstract class GameMode {
 
     protected char gameChar;
 
     public boolean isGameMode(char c){
-        return c == gameChar;
+        return c == gameChar || c == 'C';
     }
 
-    public void setGameMode(char c){
-        c = gameChar;
-    }
+    public abstract void checkModeWins (Linea linea, int columnIndex);
 }

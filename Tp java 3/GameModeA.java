@@ -1,3 +1,11 @@
 public class GameModeA extends GameMode{
-    public GameModeA(){this.gameChar = 'A';}
+
+    public GameModeA() {
+        gameChar = 'A';
+    }
+
+    @Override
+    public void checkModeWins(Linea linea, int columnIndex) {
+        linea.checkAModeWin(columnIndex);
+    }
 }
