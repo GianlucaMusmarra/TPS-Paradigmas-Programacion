@@ -31,6 +31,7 @@ public class LineaTests {
 
         assertEquals("red", linea.getCurrentTurn());
     }
+
     @Test
     public void moverCambiaDeTurno(){
         Linea linea = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
