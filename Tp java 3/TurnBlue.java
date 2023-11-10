@@ -1,4 +1,4 @@
-public class TurnoBlue extends Turno{
+public class TurnBlue extends Turn {
     @Override
     public String toString() {
         return "blue";

@@ -1,6 +1,4 @@
-import javax.sound.sampled.Line;
-
-public class TurnoRed extends Turno{
+public class TurnRed extends Turn {
     @Override
     public String toString() {
         return "red";
