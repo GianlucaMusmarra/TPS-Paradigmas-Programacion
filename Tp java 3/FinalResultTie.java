@@ -1,7 +1,7 @@
 public class FinalResultTie extends FinalResult{
     @Override
     public String printFinalResult(){
-        return "\nResultado final: tie";
+        return "\nFinal result: tie";
     }
     @Override
     public String toString() {

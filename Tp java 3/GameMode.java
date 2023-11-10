@@ -7,5 +7,5 @@ public abstract class GameMode {
         return c == gameChar;
     }
 
-    public abstract void checkModeWins (MatchLine linea, int columnIndex);
+    public abstract void checkModeWins (Linea line, int columnIndex);
 }
