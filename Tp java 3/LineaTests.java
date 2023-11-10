@@ -30,6 +30,7 @@ public class LineaTests {
 
         assertEquals("red", linea.getCurrentTurn());
     }
+
     @Test
     public void moveChangesTurn(){
         MatchLine match = new MatchLine(4,4,'A');
