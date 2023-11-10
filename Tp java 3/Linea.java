@@ -111,6 +111,7 @@ public class Linea {
     public void checkWin(int columnIndex) {
 
         finalResult.addFirst(new FinalResultTie());
+
         IntStream.range(0, maxBaseBounds.size()-1).filter(i -> grid.get(i).size() != maxHeightBounds.size()-1)
                 .forEach(e -> finalResult.addFirst(new FinalResultNone()));
 
@@ -180,17 +181,27 @@ public class Linea {
     }
 
     public void checkWinInList(List<Character> levelLayer){
-        Map<Character, Integer> counters = new HashMap<>();
-        counters.put(red, 0);
-        counters.put(blue, 0);
-
-        levelLayer.stream().forEach(character -> {
-            counters.compute(character, (key, count) -> (count != null) ? count + 1 : 0);
-            counters.forEach((color, count) -> {
-                counters.entrySet().stream()
-                        .filter(entry -> entry.getValue() == 4)
-                        .forEach(entry -> finalResult.addFirst(entry.getKey() == red ? new FinalResultRed() : new FinalResultBlue()));
-            });
-        });
+        char actualC;
+        int contadorRojoC = 0; // Contador de fichas rojas en la diagonal creciente
+        int contadorAzulC = 0; // Contador de fichas azules en la diagonal creciente
+        for (Character character : levelLayer) {
+            actualC = character;
+            if (actualC == red) {
+                contadorRojoC += 1;
+                contadorAzulC = 0;
+            } else if (actualC == blue) {
+                contadorAzulC += 1;
+                contadorRojoC = 0;
+            } else {
+                contadorAzulC = 0;
+                contadorRojoC = 0;
+            }
+            if (contadorRojoC == 4) {
+                finalResult.addFirst(new FinalResultRed());
+            }
+            if (contadorAzulC == 4) {
+                finalResult.addFirst(new FinalResultBlue());
+            }
+        }
     }
 }
