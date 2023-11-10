@@ -3,7 +3,7 @@
 public class Game {
     public static void main( String[] args) throws Exception {
         System.out.println( "Dimensiones?");
-        Linea game = new Linea( promptAsInt( "Base? " ),
+        MatchLine game = new MatchLine( promptAsInt( "Base? " ),
                 promptAsInt( "Altura? " ),
                 promptAsChar( "Estartegia de Juego: A, B o C? " ) );
 

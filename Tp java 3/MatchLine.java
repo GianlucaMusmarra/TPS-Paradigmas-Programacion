@@ -2,9 +2,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Linea {
+public class MatchLine {
 
-    List<List<Character>> grilla = new ArrayList<>();
+    List<List<Character>> grid = new ArrayList<>();
 
     public LinkedList<ListBounds> maxHeightBounds = new LinkedList<>(List.of(new ListBoundOut()));
     public LinkedList<ListBounds> maxBaseBounds = new LinkedList<>(List.of(new ListBoundOut()));
@@ -20,7 +20,7 @@ public class Linea {
     public LinkedList<FinalResult> finalResult = new LinkedList<>();
     public String getFinalResult(){return finalResult.get(0).toString();}
 
-    public Linea(int base, int altura, char c) {
+    public MatchLine(int base, int altura, char c) {
 
         IntStream.range(0,altura).forEach(i -> maxHeightBounds.addFirst(new ListBoundIn()));
         IntStream.range(0,altura).forEach(i -> maxBaseBounds.addFirst(new ListBoundIn()));
@@ -43,7 +43,7 @@ public class Linea {
 
         finalResult.add(new FinalResultNone());
 
-        IntStream.range(0, base).forEach(x -> grilla.add(new ArrayList<>()));
+        IntStream.range(0, base).forEach(x -> grid.add(new ArrayList<>()));
     }
 
 
@@ -100,10 +100,10 @@ public class Linea {
         int index = (realIndex % maxBaseBounds.size() + maxBaseBounds.size()) % maxBaseBounds.size();
         maxBaseBounds.get(index).checkBound();
 
-        int index2 = (grilla.get(realIndex).size() % maxHeightBounds.size() + maxHeightBounds.size()) % maxHeightBounds.size();
+        int index2 = (grid.get(realIndex).size() % maxHeightBounds.size() + maxHeightBounds.size()) % maxHeightBounds.size();
         maxHeightBounds.get(index2).checkBound();
 
-        grilla.get(realIndex).add(ficha);
+        grid.get(realIndex).add(ficha);
 
         checkWin(realIndex);
     }
@@ -111,16 +111,16 @@ public class Linea {
     public void checkWin(int columnIndex) {
 
         finalResult.addFirst(new FinalResultTie());
-        IntStream.range(0, maxBaseBounds.size()-1).filter(i -> grilla.get(i).size() != maxHeightBounds.size()-1)
+        IntStream.range(0, maxBaseBounds.size()-1).filter(i -> grid.get(i).size() != maxHeightBounds.size()-1)
                 .forEach(e -> finalResult.addFirst(new FinalResultNone()));
 
         allGameModes.get(0).checkModeWins(this, columnIndex);
     }
 
     public void checkAModeWin(int columnIndex){
-        checkWinInList(grilla.get(columnIndex));
+        checkWinInList(grid.get(columnIndex));
 
-        int alturaHorizontal = grilla.get(columnIndex).size() - 1;
+        int alturaHorizontal = grid.get(columnIndex).size() - 1;
         List<Character> capaDeNivel = new ArrayList<>();
 
         IntStream.range(0, maxBaseBounds.size()-1).forEach(x -> capaDeNivel.add(fichaEnCasilla(x, alturaHorizontal)));
@@ -129,7 +129,7 @@ public class Linea {
     }
 
     public void checkBModeWin(int columnIndex){
-        int alturaActual = grilla.get(columnIndex).size() - 1;
+        int alturaActual = grid.get(columnIndex).size() - 1;
         int baseActual = columnIndex;
 
         int minimo = Math.min(baseActual, alturaActual);
@@ -147,7 +147,7 @@ public class Linea {
 
         checkWinInList(capaDeNivelC);
 
-        int heightActualD = grilla.get(columnIndex).size() - 1;
+        int heightActualD = grid.get(columnIndex).size() - 1;
 
 
         int[] actualIndexes2 = {columnIndex, heightActualD};
@@ -172,8 +172,8 @@ public class Linea {
 
     public char fichaEnCasilla(int column, int alturaReal){
         return IntStream.range(0, 1)
-                .filter(i -> alturaReal < grilla.get(column).size())
-                .mapToObj(i -> grilla.get(column).get(alturaReal))
+                .filter(i -> alturaReal < grid.get(column).size())
+                .mapToObj(i -> grid.get(column).get(alturaReal))
                 .findFirst()
                 .orElse(' ');
     }
