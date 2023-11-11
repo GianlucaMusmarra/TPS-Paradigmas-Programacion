@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class MatchLine {
+public class Linea {
 
     List<List<Character>> grid = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class MatchLine {
     public LinkedList<FinalResult> finalResult = new LinkedList<>();
     public String getFinalResult(){return finalResult.get(0).toString();}
 
-    public MatchLine(int base, int altura, char c) {
+    public Linea(int base, int altura, char c) {
 
         IntStream.range(0,altura).forEach(i -> maxHeightBounds.addFirst(new ListBoundIn()));
         IntStream.range(0,altura).forEach(i -> maxBaseBounds.addFirst(new ListBoundIn()));
