@@ -2,14 +2,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class MatchLine {
+public class Linea {
 
     List<List<Character>> grid = new ArrayList<>();
 
     public LinkedList<ListBounds> maxHeightBounds = new LinkedList<>(List.of(new ListBoundOut()));
     public LinkedList<ListBounds> maxBaseBounds = new LinkedList<>(List.of(new ListBoundOut()));
 
-    public LinkedList<Turn> turno = new LinkedList<>(Arrays.asList(new TurnRed(),new TurnBlue()));
+    public LinkedList<Turn> actualTurn = new LinkedList<>(Arrays.asList(new TurnRed(),new TurnBlue()));
 
     public char red = 'x';
     public char blue = 'o';
@@ -20,7 +20,7 @@ public class MatchLine {
     public LinkedList<FinalResult> finalResult = new LinkedList<>();
     public String getFinalResult(){return finalResult.get(0).toString();}
 
-    public MatchLine(int base, int altura, char c) {
+    public Linea(int base, int altura, char c) {
 
         IntStream.range(0,altura).forEach(i -> maxHeightBounds.addFirst(new ListBoundIn()));
         IntStream.range(0,altura).forEach(i -> maxBaseBounds.addFirst(new ListBoundIn()));
@@ -50,13 +50,13 @@ public class MatchLine {
     public String show() {
 
         StringBuilder impression =new StringBuilder();
-        impression.append("\n" + "Turno: ").append(turno.get(0).toString()).append("\n");
+        impression.append("\n" + "Turn: ").append(actualTurn.get(0).toString()).append("\n");
 
         IntStream.range(0,maxHeightBounds.size()-1)
                 .mapToObj(i -> maxHeightBounds.size()-2 - i)
                 .forEach(i-> {
             IntStream.range(0,maxHeightBounds.size()-1).forEach(x ->{
-                impression.append("|").append(fichaEnCasilla(x, i)).append("| ");
+                impression.append("|").append(getToken(x, i)).append("| ");
             });
 
             impression.append("\n");
@@ -78,19 +78,19 @@ public class MatchLine {
     }
 
     public void playRedAt(int column) {
-        turno.get(0).PlayRed();
+        actualTurn.get(0).PlayRed();
         introduceMovement(column, red);
-        turno.addFirst(turno.removeLast());
+        actualTurn.addFirst(actualTurn.removeLast());
     }
 
     public void playBlueAt(int column) {
-        turno.get(0).PlayBlue();
+        actualTurn.get(0).PlayBlue();
         introduceMovement(column, blue);
-        turno.addFirst(turno.removeLast());
+        actualTurn.addFirst(actualTurn.removeLast());
     }
 
     public String getCurrentTurn(){
-        return turno.get(0).toString();
+        return actualTurn.get(0).toString();
     }
 
     public void introduceMovement(int column, char ficha) {
@@ -111,6 +111,7 @@ public class MatchLine {
     public void checkWin(int columnIndex) {
 
         finalResult.addFirst(new FinalResultTie());
+
         IntStream.range(0, maxBaseBounds.size()-1).filter(i -> grid.get(i).size() != maxHeightBounds.size()-1)
                 .forEach(e -> finalResult.addFirst(new FinalResultNone()));
 
@@ -120,37 +121,38 @@ public class MatchLine {
     public void checkAModeWin(int columnIndex){
         checkWinInList(grid.get(columnIndex));
 
-        int alturaHorizontal = grid.get(columnIndex).size() - 1;
-        List<Character> capaDeNivel = new ArrayList<>();
+        int verticalHeight = grid.get(columnIndex).size() - 1;
+        List<Character> levelLayer = new ArrayList<>();
 
-        IntStream.range(0, maxBaseBounds.size()-1).forEach(x -> capaDeNivel.add(fichaEnCasilla(x, alturaHorizontal)));
+        IntStream.range(0, maxBaseBounds.size()-1).forEach(x -> levelLayer.add(getToken(x, verticalHeight)));
 
-        checkWinInList(capaDeNivel);
+        checkWinInList(levelLayer);
     }
 
     public void checkBModeWin(int columnIndex){
-        int alturaActual = grid.get(columnIndex).size() - 1;
-        int baseActual = columnIndex;
 
-        int minimo = Math.min(baseActual, alturaActual);
+        int actualColumHeight = grid.get(columnIndex).size() - 1;
+        int actualWorkBase = columnIndex;
 
-        int baseMinima = baseActual - minimo;
-        int alturaMinima = alturaActual - minimo;
+        int mathMin = Math.min(actualWorkBase, actualColumHeight);
+
+        int minimumBaseCoordDiagonal = actualWorkBase - mathMin ;
+        int maxHeightDiagonal = actualColumHeight - mathMin ;
 
 
-        int[] actualIndexes = {baseMinima, alturaMinima};
+        int[] actualIndexes = {minimumBaseCoordDiagonal, maxHeightDiagonal};
 
         List<Character> capaDeNivelC = new ArrayList<>();
 
         IntStream.range(0, Math.min(maxBaseBounds.size() - actualIndexes[0]-1, maxHeightBounds.size() - actualIndexes[1]))
-                .forEach(i -> capaDeNivelC.add(fichaEnCasilla(actualIndexes[0] + i, actualIndexes[1] + i)));
+                .forEach(i -> capaDeNivelC.add(getToken(actualIndexes[0] + i, actualIndexes[1] + i)));
 
         checkWinInList(capaDeNivelC);
 
-        int heightActualD = grid.get(columnIndex).size() - 1;
+        int actualHeightDiagonal = grid.get(columnIndex).size() - 1;
 
 
-        int[] actualIndexes2 = {columnIndex, heightActualD};
+        int[] actualIndexes2 = {columnIndex, actualHeightDiagonal};
 
         IntStream.iterate(0, i -> actualIndexes2[1] > 0 && actualIndexes2[0] < maxHeightBounds.size() - 2, i -> i + 1)
                 .forEach(i -> {
@@ -158,19 +160,19 @@ public class MatchLine {
                     actualIndexes2[1]--;
                 });
 
-        List<Character> capaDeNivelD = new ArrayList<>();
+        List<Character> levelLayerDiagonal = new ArrayList<>();
 
         IntStream.iterate(actualIndexes2[0], i -> i >= 0 && actualIndexes2[1] < maxHeightBounds.size(), i -> i - 1)
                 .forEach(i -> {
-                    capaDeNivelD.add(fichaEnCasilla(i, actualIndexes2[1]));
+                    levelLayerDiagonal.add(getToken(i, actualIndexes2[1]));
 
                     actualIndexes2[1]++;
                 });
 
-        checkWinInList(capaDeNivelD);
+        checkWinInList(levelLayerDiagonal);
     }
 
-    public char fichaEnCasilla(int column, int alturaReal){
+    public char getToken(int column, int alturaReal){
         return IntStream.range(0, 1)
                 .filter(i -> alturaReal < grid.get(column).size())
                 .mapToObj(i -> grid.get(column).get(alturaReal))
@@ -178,18 +180,29 @@ public class MatchLine {
                 .orElse(' ');
     }
 
-    public void checkWinInList(List<Character> capaDeNivel){
-        Map<Character, Integer> counters = new HashMap<>();
-        counters.put(red, 0);
-        counters.put(blue, 0);
+    public void checkWinInList(List<Character> levelLayer){
+        char[] actualC = {'p'};
+        int[] contadorRojoC = {0};
+        int[] contadorAzulC = {0};
 
-        capaDeNivel.stream().forEach(character -> {
-            counters.compute(character, (key, count) -> (count != null) ? count + 1 : 0);
-            counters.forEach((color, count) -> {
-                counters.entrySet().stream()
-                        .filter(entry -> entry.getValue() == 4)
-                        .forEach(entry -> finalResult.addFirst(entry.getKey() == red ? new FinalResultRed() : new FinalResultBlue()));
-            });
+        levelLayer.stream().forEach(character->{
+            actualC[0] = character;
+            if (actualC[0] == red) {
+                contadorRojoC[0]++;
+                contadorAzulC[0] = 0;
+            } else if (actualC[0] == blue) {
+                contadorAzulC[0]++;
+                contadorRojoC[0] = 0;
+            } else {
+                contadorAzulC[0] = 0;
+                contadorRojoC[0] = 0;
+            }
+            if (contadorRojoC[0] == 4) {
+                finalResult.addFirst(new FinalResultRed());
+            }
+            if (contadorAzulC[0] == 4) {
+                finalResult.addFirst(new FinalResultBlue());
+            }
         });
     }
 }

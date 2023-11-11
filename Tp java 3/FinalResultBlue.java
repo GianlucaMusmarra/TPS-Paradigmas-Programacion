@@ -1,7 +1,7 @@
 public class FinalResultBlue extends FinalResult{
     @Override
     public String printFinalResult(){
-        return "\nResultado final: blue";
+        return "\nFinal result: blue wins";
     }
 
     @Override
