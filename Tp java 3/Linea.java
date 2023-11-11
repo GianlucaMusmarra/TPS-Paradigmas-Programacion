@@ -20,10 +20,10 @@ public class Linea {
     public LinkedList<FinalResult> finalResult = new LinkedList<>();
     public String getFinalResult(){return finalResult.get(0).toString();}
 
-    public Linea(int base, int altura, char c) {
+    public Linea(int base, int height, char userInputGM) {
 
-        IntStream.range(0,altura).forEach(i -> maxHeightBounds.addFirst(new ListBoundIn()));
-        IntStream.range(0,altura).forEach(i -> maxBaseBounds.addFirst(new ListBoundIn()));
+        IntStream.range(0,height).forEach(i -> maxHeightBounds.addFirst(new ListBoundIn()));
+        IntStream.range(0,height).forEach(i -> maxBaseBounds.addFirst(new ListBoundIn()));
 
         maxHeightBounds.get(0).checkBoundTooSmall();
         maxBaseBounds.get(0).checkBoundTooSmall();
@@ -33,13 +33,13 @@ public class Linea {
         allGameModes.add(new GameModeC());
 
         allGameModes = allGameModes.stream()
-                .filter(gm -> gm.isGameMode(c))
+                .filter(gm -> gm.isGameMode(userInputGM))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         allGameModes.addLast(new GameModeNone());
-        allGameModes.getFirst().isGameMode(c);
+        allGameModes.getFirst().isGameMode(userInputGM);
 
-        gameMode = c;
+        gameMode = userInputGM;
 
         finalResult.add(new FinalResultNone());
 
@@ -93,7 +93,7 @@ public class Linea {
         return actualTurn.get(0).toString();
     }
 
-    public void introduceMovement(int column, char ficha) {
+    public void introduceMovement(int column, char token) {
 
         int realIndex = column - 1;
 
@@ -103,7 +103,7 @@ public class Linea {
         int index2 = (grid.get(realIndex).size() % maxHeightBounds.size() + maxHeightBounds.size()) % maxHeightBounds.size();
         maxHeightBounds.get(index2).checkBound();
 
-        grid.get(realIndex).add(ficha);
+        grid.get(realIndex).add(token);
 
         checkWin(realIndex);
     }
@@ -172,35 +172,35 @@ public class Linea {
         checkWinInList(levelLayerDiagonal);
     }
 
-    public char getToken(int column, int alturaReal){
+    public char getToken(int column,int indexHeight){
         return IntStream.range(0, 1)
-                .filter(i -> alturaReal < grid.get(column).size())
-                .mapToObj(i -> grid.get(column).get(alturaReal))
+                .filter(i -> indexHeight < grid.get(column).size())
+                .mapToObj(i -> grid.get(column).get(indexHeight))
                 .findFirst()
                 .orElse(' ');
     }
 
     public void checkWinInList(List<Character> levelLayer){
         char[] actualC = {'p'};
-        int[] contadorRojoC = {0};
-        int[] contadorAzulC = {0};
+        int[] redCounter = {0};
+        int[] blueConter = {0};
 
         levelLayer.forEach(character->{
             actualC[0] = character;
             if (actualC[0] == red) {
-                contadorRojoC[0]++;
-                contadorAzulC[0] = 0;
+                redCounter[0]++;
+                blueConter[0] = 0;
             } else if (actualC[0] == blue) {
-                contadorAzulC[0]++;
-                contadorRojoC[0] = 0;
+                blueConter[0]++;
+                redCounter[0] = 0;
             } else {
-                contadorAzulC[0] = 0;
-                contadorRojoC[0] = 0;
+                blueConter[0] = 0;
+                redCounter[0] = 0;
             }
-            if (contadorRojoC[0] == 4) {
+            if (redCounter[0] == 4) {
                 finalResult.addFirst(new FinalResultRed());
             }
-            if (contadorAzulC[0] == 4) {
+            if (blueConter[0] == 4) {
                 finalResult.addFirst(new FinalResultBlue());
             }
         });

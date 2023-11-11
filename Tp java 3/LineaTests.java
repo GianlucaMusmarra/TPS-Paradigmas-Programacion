@@ -10,8 +10,7 @@ public class LineaTests {
 
     @Test
     public void gameNotFinish(){
-        Linea match = new Linea(5,5,'A');
-
+        Linea match = creates5x5Linea('A');
         assertFalse(match.finished());
     }
     @Test
@@ -19,39 +18,36 @@ public class LineaTests {
         assertThrowsLike(() ->new Linea(0,0,'A'), "Invalid setup! Too small!" );
     }
     @Test
-    public void invalidGameMode(){
-
-        assertThrowsLike(() ->new Linea(4,4,'X'), "Invalid setup." );
-    }
+    public void invalidGameMode(){assertThrowsLike(() ->creates4x4Linea('X'), "Invalid setup." );}
 
     @Test
     public void redAlwaysStart(){
-        Linea MatchLine = new Linea(4,4,'A');
-
-        assertEquals("red", MatchLine.getCurrentTurn());
+        Linea match = creates4x4Linea('A');
+        verificatesActualTurn("red", match);
     }
 
     @Test
     public void moveChangesTurn(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
+
         match.playRedAt(1);
-        assertEquals("blue", match.getCurrentTurn());
+        verificatesActualTurn("blue", match);
 
         match.playBlueAt(1);
-        assertEquals("red", match.getCurrentTurn());
+        verificatesActualTurn("red", match);
 
     }
 
     @Test
     public void gridCreatesWithCorrectBase(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
         assertEquals(4, match.grid.size());
     }
 
     @Test
     public void blueCantMoveIfNotHisTurn(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
         assertThrowsLike( () ->match.playBlueAt(1), "Wrong turn!");
     }
@@ -59,7 +55,7 @@ public class LineaTests {
 
     @Test
     public void redCantMoveIfNotHisTurn(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
         match.playRedAt(1);
 
         assertThrowsLike( () ->match.playRedAt(1), "Wrong turn!");
@@ -68,7 +64,7 @@ public class LineaTests {
 
     @Test
     public void movementIncreasesHeight(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
         match.playRedAt(1);
 
@@ -80,7 +76,7 @@ public class LineaTests {
 
     @Test
     public void twoMovementsIncreasesTwoUnities(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
         match.playRedAt(1);
         match.playBlueAt(1);
@@ -94,7 +90,7 @@ public class LineaTests {
 
     @Test
     public void exceedsVerticalLimit(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
         match.playRedAt(1);
         match.playBlueAt(1);
@@ -106,16 +102,14 @@ public class LineaTests {
     }
     @Test
     public void exceedsHorizontalLimit(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
         assertThrowsLike(()->match.playRedAt(5), "Out of bounds!");
     }
 
-
-
     @Test
     public void exceedsHorizontalLimitNegative(){
-        Linea MatchLine = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+        Linea MatchLine = creates4x4Linea('A');;
 
         assertThrowsLike(()->MatchLine.playRedAt(-5), "Out of bounds!");
 
@@ -123,279 +117,147 @@ public class LineaTests {
 
     @Test
     public void redWinsVerticallyInModeA(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
+        redCompletes4Vertical(match);
 
-        assertEquals("red", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("red", match);
     }
     @Test
     public void blueWinsVerticallyInModeA(){
         Linea match = new Linea(4,4,'A');
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(2);
+        blueCompletes4Vertical(match);
 
-        assertEquals("blue", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("blue", match);
+    }
+    @Test
+    public void redWinsVerticallyInModeC(){
+        Linea match = creates4x4Linea('C');
+
+        redCompletes4Vertical(match);
+
+        verificatesFinalResults("red", match);
+    }
+    @Test
+    public void blueWinsVerticallyInModeC(){
+        Linea match = creates4x4Linea('C');
+
+        blueCompletes4Vertical(match);
+
+        verificatesFinalResults("blue", match);
     }
 
     @Test
     public void redWinsHorizontallyInModeA(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
-        match.playRedAt(1);
-        match.playBlueAt(1);
-        match.playRedAt(2);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(3);
-        match.playRedAt(4);
+        redCompletes4Horizontal(match);
 
-        assertEquals("red", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("red", match);
     }
 
     @Test
     public void blueWinsHorizontallyInModeA(){
-        Linea match = new Linea(4,4,'A');
+        Linea match = creates4x4Linea('A');
 
+        blueCompletes4Horizontal(match);
 
-        match.playRedAt(1);
-        match.playBlueAt(1);
-        match.playRedAt(2);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(3);
-        match.playRedAt(1);
-        match.playBlueAt(4);
-        match.playRedAt(1);
-        match.playBlueAt(4);
-
-        assertEquals("blue", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("blue", match);
     }
     @Test
     public void redWinsHorizontallyInModeC(){
-        Linea match = new Linea(4,4,'C');
+        Linea match = creates4x4Linea('C');
 
-        match.playRedAt(1);
-        match.playBlueAt(1);
-        match.playRedAt(2);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(3);
-        match.playRedAt(4);
+        redCompletes4Horizontal(match);
 
-        assertEquals("red", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("red", match);
     }
     @Test
     public void blueWinsHorizontallyInModeC(){
-        Linea match = new Linea(4,4,'C');
+        Linea match = creates4x4Linea('C');
 
-        match.playRedAt(1);
-        match.playBlueAt(1);
-        match.playRedAt(2);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(3);
-        match.playRedAt(1);
-        match.playBlueAt(4);
-        match.playRedAt(1);
-        match.playBlueAt(4);
+        blueCompletes4Horizontal(match);
 
-        assertEquals("blue", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("blue", match);
     }
 
     @Test
     public void redCompletesPositiveDiagonalInModeB(){
-        Linea match = new Linea(4, 4, 'B');
+        Linea match = creates4x4Linea('B');
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(2);
-        match.playBlueAt(3);
-        match.playRedAt(3);
-        match.playBlueAt(1);
-        match.playRedAt(3);
-        match.playBlueAt(4);
-        match.playRedAt(4);
-        match.playBlueAt(4);
-        match.playRedAt(4);
+        redCompletes4PositiveDiagonal(match);
 
-        assertEquals("red", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("red", match);
     }
 
     @Test
     public void redCompletesNegativeDiagonalInModeB(){
-        Linea match = new Linea(4, 4, 'B');
+        Linea match = creates4x4Linea('B');
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(1);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(2);
-        match.playBlueAt(3);
-        match.playRedAt(3);
-        match.playBlueAt(2);
-        match.playRedAt(4);
+        redCompletes4NegativeDiagonal(match);
 
-        assertEquals("red", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("red", match);
 
     }
     @Test
     public void redCompletesPositiveDiagonalInModeC(){
-        Linea match = new Linea(4, 4, 'C');
+        Linea match = creates4x4Linea('C');
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(2);
-        match.playBlueAt(3);
-        match.playRedAt(3);
-        match.playBlueAt(1);
-        match.playRedAt(3);
-        match.playBlueAt(4);
-        match.playRedAt(4);
-        match.playBlueAt(4);
-        match.playRedAt(4);
+        redCompletes4PositiveDiagonal(match);
 
-        assertEquals("red", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("red", match);
     }
     @Test
     public void redCompletesNegativeDiagonalInModeC(){
-        Linea match = new Linea(4, 4, 'C');
+        Linea match = creates4x4Linea('C');
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(1);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(2);
-        match.playBlueAt(3);
-        match.playRedAt(3);
-        match.playBlueAt(2);
-        match.playRedAt(4);
+        redCompletes4NegativeDiagonal(match);
 
-        assertEquals("red", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("red", match);
 
     }
 
     @Test
-    public void BlueCompletesPositiveDiagonalInModeB(){
+    public void blueCompletesPositiveDiagonalInModeB(){
+        Linea match = creates5x5Linea('B');
 
-        Linea match = new Linea(5, 5, 'B');
+        blueCompletes4PositiveDiagonal(match);
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(3);
-        match.playRedAt(4);
-        match.playBlueAt(4);
-        match.playRedAt(1);
-        match.playBlueAt(4);
-        match.playRedAt(5);
-        match.playBlueAt(5);
-        match.playRedAt(5);
-        match.playBlueAt(5);
-
-        assertEquals("blue", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("blue", match);
     }
 
     @Test
     public void blueCompletesNegativeDiagonalInModeB(){
-        Linea match = new Linea(5, 5, 'B');
+        Linea match = creates5x5Linea('B');
 
-        match.playRedAt(2);
-        match.playBlueAt(1);
-        match.playRedAt(4);
-        match.playBlueAt(5);
-        match.playRedAt(3);
-        match.playBlueAt(4);
-        match.playRedAt(1);
-        match.playBlueAt(3);
-        match.playRedAt(1);
-        match.playBlueAt(3);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(2);
-        match.playBlueAt(2);
+        blueCompletes4NegativeDiagonal(match);
 
-        assertEquals("blue", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("blue", match);
     }
 
     @Test
-    public void BlueCompletesPositiveDiagonalInModeC(){
+    public void blueCompletesPositiveDiagonalInModeC(){
+        Linea match = creates5x5Linea('C');
 
-        Linea match = new Linea(5, 5, 'C');
+        blueCompletes4PositiveDiagonal(match);
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(3);
-        match.playRedAt(4);
-        match.playBlueAt(4);
-        match.playRedAt(1);
-        match.playBlueAt(4);
-        match.playRedAt(5);
-        match.playBlueAt(5);
-        match.playRedAt(5);
-        match.playBlueAt(5);
-
-        assertEquals("blue", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("blue", match);
     }
 
     @Test
     public void blueCompletesNegativeDiagonalInModeC(){
-        Linea match = new Linea(5, 5, 'C');
+        Linea match = creates5x5Linea('C');
 
-        match.playRedAt(2);
-        match.playBlueAt(1);
-        match.playRedAt(4);
-        match.playBlueAt(5);
-        match.playRedAt(3);
-        match.playBlueAt(4);
-        match.playRedAt(1);
-        match.playBlueAt(3);
-        match.playRedAt(1);
-        match.playBlueAt(3);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(2);
-        match.playBlueAt(2);
+        blueCompletes4NegativeDiagonal(match);
 
-        assertEquals("blue", match.getFinalResult());
-        assertTrue(match.finished());
+        verificatesFinalResults("blue", match);
     }
 
     @Test
     public void matchIsADraw(){
-
         Linea match = new Linea(3, 3, 'C');
+
         match.playRedAt(1);
         match.playBlueAt(1);
         match.playRedAt(1);
@@ -416,6 +278,7 @@ public class LineaTests {
     public void printInitializesCorrectly()
     {
         Linea match = new Linea(3, 3, 'C');
+
         assertEquals("\n" + "Turn: "+ "red" + "\n"
                         + "| | | | | | " + "\n"
                         + "| | | | | | " + "\n"
@@ -427,9 +290,9 @@ public class LineaTests {
 
     @Test
     public void movementPrintsCorrectly(){
-        Linea match = new Linea(3, 3, 'C');
-        match.playRedAt(1);
+        Linea match = creates3x3Linea('C');
 
+        match.playRedAt(1);
 
         assertEquals("""
 
@@ -445,10 +308,10 @@ public class LineaTests {
 
     @Test
     public void twoMovementsInSameColum(){
-        Linea match = new Linea(3, 3, 'C');
+        Linea match = creates3x3Linea('C');
+
         match.playRedAt(1);
         match.playBlueAt(1);
-
 
         assertEquals("\n" + "Turn: "+ "red" + "\n"
                         + "| | | | | | " + "\n"
@@ -460,14 +323,9 @@ public class LineaTests {
     }
     @Test
     public void matchResultPrintsCorrectlyForRed(){
-        Linea match = new Linea(4, 4, 'C');
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
+        Linea match = creates4x4Linea('C');
+
+        redCompletes4Vertical(match);
 
         assertEquals("\n" + "Turn: "+ "blue" + "\n"
                         + "|x| | | | | | | " + "\n"
@@ -481,16 +339,9 @@ public class LineaTests {
     }
     @Test
     public void matchResultPrintsCorrectlyForBlue(){
-        Linea match = new Linea(4,4,'A'); // modificar dsp los argumentos. ni idea que poner
+        Linea match = creates4x4Linea('A');
 
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(1);
-        match.playBlueAt(2);
-        match.playRedAt(3);
-        match.playBlueAt(2);
+        blueCompletes4Vertical(match);
 
         assertEquals("\n" + "Turn: "+ "red" + "\n"
                         + "| | |o| | | | | " + "\n"
@@ -503,13 +354,128 @@ public class LineaTests {
     }
 
 
-
-
-
-
     public void assertThrowsLike (Executable executable, String message ) {
         assertEquals (message,
                 assertThrows( Exception.class, executable).getMessage() ); }
+
+    public Linea creates3x3Linea(char gameMode){
+        return new Linea(3,3,gameMode);
     }
+    public Linea creates4x4Linea(char gameMode){
+       return new Linea(4,4,gameMode);
+    }
+    public Linea creates5x5Linea(char gameMode){
+        return new Linea(5,5,gameMode);
+    }
+
+    public void redCompletes4Vertical(Linea match){
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(1);
+    }
+    public void blueCompletes4Vertical(Linea match){
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(3);
+        match.playBlueAt(2);
+    }
+    public void redCompletes4Horizontal(Linea match){
+        match.playRedAt(1);
+        match.playBlueAt(1);
+        match.playRedAt(2);
+        match.playBlueAt(2);
+        match.playRedAt(3);
+        match.playBlueAt(3);
+        match.playRedAt(4);
+    }
+    public void blueCompletes4Horizontal(Linea match){
+        match.playRedAt(1);
+        match.playBlueAt(1);
+        match.playRedAt(2);
+        match.playBlueAt(2);
+        match.playRedAt(3);
+        match.playBlueAt(3);
+        match.playRedAt(1);
+        match.playBlueAt(4);
+        match.playRedAt(1);
+        match.playBlueAt(4);
+    }
+    public void redCompletes4PositiveDiagonal(Linea match){
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(2);
+        match.playBlueAt(3);
+        match.playRedAt(3);
+        match.playBlueAt(1);
+        match.playRedAt(3);
+        match.playBlueAt(4);
+        match.playRedAt(4);
+        match.playBlueAt(4);
+        match.playRedAt(4);
+    }
+    public void blueCompletes4PositiveDiagonal(Linea match){
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(3);
+        match.playBlueAt(3);
+        match.playRedAt(4);
+        match.playBlueAt(4);
+        match.playRedAt(1);
+        match.playBlueAt(4);
+        match.playRedAt(5);
+        match.playBlueAt(5);
+        match.playRedAt(5);
+        match.playBlueAt(5);
+    }
+    public void redCompletes4NegativeDiagonal(Linea match){
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(1);
+        match.playBlueAt(1);
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(2);
+        match.playBlueAt(3);
+        match.playRedAt(3);
+        match.playBlueAt(2);
+        match.playRedAt(4);
+    }
+    public void blueCompletes4NegativeDiagonal(Linea match){
+        match.playRedAt(2);
+        match.playBlueAt(1);
+        match.playRedAt(4);
+        match.playBlueAt(5);
+        match.playRedAt(3);
+        match.playBlueAt(4);
+        match.playRedAt(1);
+        match.playBlueAt(3);
+        match.playRedAt(1);
+        match.playBlueAt(3);
+        match.playRedAt(1);
+        match.playBlueAt(2);
+        match.playRedAt(2);
+        match.playBlueAt(2);
+    }
+    public void verificatesFinalResults(String expectedResult, Linea match){
+        assertEquals(expectedResult, match.getFinalResult());
+        assertTrue(match.finished());
+    }
+
+    public void verificatesActualTurn(String expectedResult, Linea match){
+        assertEquals(expectedResult, match.getCurrentTurn());
+    }
+
+
+    }
+
+
 
 
