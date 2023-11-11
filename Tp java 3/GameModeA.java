@@ -5,7 +5,7 @@ public class GameModeA extends GameMode{
     }
 
     @Override
-    public void checkModeWins(Linea line, int columnIndex) {
+    public void checkModeWins(MatchLine line, int columnIndex) {
         line.checkAModeWin(columnIndex);
     }
 }

@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Linea {
+public class MatchLine {
 
     List<List<Character>> grid = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class Linea {
     public LinkedList<FinalResult> finalResult = new LinkedList<>();
     public String getFinalResult(){return finalResult.get(0).toString();}
 
-    public Linea(int base, int altura, char c) {
+    public MatchLine(int base, int altura, char c) {
 
         IntStream.range(0,altura).forEach(i -> maxHeightBounds.addFirst(new ListBoundIn()));
         IntStream.range(0,altura).forEach(i -> maxBaseBounds.addFirst(new ListBoundIn()));
@@ -185,7 +185,7 @@ public class Linea {
         int[] contadorRojoC = {0};
         int[] contadorAzulC = {0};
 
-        levelLayer.stream().forEach(character->{
+        levelLayer.forEach(character->{
             actualC[0] = character;
             if (actualC[0] == red) {
                 contadorRojoC[0]++;
