@@ -277,7 +277,7 @@ public class LineaTests {
     @Test
     public void printInitializesCorrectly()
     {
-        Linea match = new Linea(3, 3, 'C');
+        Linea match = creates3x3Linea('C');
 
         assertEquals("\n" + "Turn: "+ "red" + "\n"
                         + "| | | | | | " + "\n"
