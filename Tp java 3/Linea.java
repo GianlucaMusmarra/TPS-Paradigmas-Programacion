@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Linea {
 
@@ -105,37 +106,25 @@ public class Linea {
         gameModeManager.checkWinsAt(columnIndex);
     }
 
-    public char getToken(int column,int indexHeight){
+    public char getToken(int base,int indexHeight){
         return IntStream.range(0, 1)
-                .filter(i -> indexHeight < grid.get(column).size())
-                .mapToObj(i -> grid.get(column).get(indexHeight))
+                .filter(i -> base < grid.size())
+                .filter(i -> indexHeight < grid.get(base).size())
+                .mapToObj(i -> grid.get(base).get(indexHeight))
                 .findFirst()
                 .orElse(' ');
     }
 
-    public void checkWinInList(List<Character> levelLayer){
-        char[] actualC = {'p'};
-        int[] redCounter = {0};
-        int[] blueConter = {0};
+    public void checkWinInList(List<Character> levelLayer, int columnIndex){
 
-        levelLayer.forEach(character->{
-            actualC[0] = character;
-            if (actualC[0] == red) {
-                redCounter[0]++;
-                blueConter[0] = 0;
-            } else if (actualC[0] == blue) {
-                blueConter[0]++;
-                redCounter[0] = 0;
-            } else {
-                blueConter[0] = 0;
-                redCounter[0] = 0;
-            }
-            if (redCounter[0] == 4) {
-                finalResult.addFirst(new FinalResultRed());
-            }
-            if (blueConter[0] == 4) {
-                finalResult.addFirst(new FinalResultBlue());
-            }
-        });
+        IntStream.range(0, 1).filter(n->
+                IntStream.range(-3,4).filter(
+                        row -> columnIndex + row < levelLayer.size() && columnIndex + row >= 0 && levelLayer.get(row + columnIndex)
+                                .equals('x')).count() >= 4).forEach(n ->finalResult.addFirst(new FinalResultRed()));
+
+        IntStream.range(0, 1).filter(n->
+                IntStream.range(-3,4).filter(
+                        row -> columnIndex + row < levelLayer.size() && columnIndex + row >= 0 && levelLayer.get(row + columnIndex)
+                                .equals('o')).count() >= 4).forEach(n ->finalResult.addFirst(new FinalResultBlue()));
     }
 }

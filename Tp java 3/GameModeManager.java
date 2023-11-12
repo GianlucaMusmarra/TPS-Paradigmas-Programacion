@@ -27,31 +27,31 @@ public class GameModeManager {
         allGameModes.getFirst().isGameMode(userInputGM);
     }
 
-    public void checkWinsAt(int columnIndex){
-        allGameModes.get(0).checkModeWins(this, columnIndex);
+    public void checkWinsAt(int baseIndex){
+        allGameModes.get(0).checkModeWins(this, baseIndex);
     }
 
     public void checkAModeWin(int columnIndex){
-        line.checkWinInList(line.grid.get(columnIndex));
 
         int verticalHeight = line.grid.get(columnIndex).size() - 1;
+
+        line.checkWinInList(line.grid.get(columnIndex), verticalHeight);
 
         List<Character> levelLayer = new ArrayList<>();
 
         IntStream.range(0, line.maxBaseBounds.size()-1).forEach(x -> levelLayer.add(line.getToken(x, verticalHeight)));
 
-        line.checkWinInList(levelLayer);
+        line.checkWinInList(levelLayer, verticalHeight);
     }
 
-    public void checkBModeWin(int columnIndex){
+    public void checkBModeWin(int basedIndex){
 
-        int actualColumHeight = line.grid.get(columnIndex).size() - 1;
+        int actualColumHeight = line.grid.get(basedIndex).size() - 1;
 
-        int mathMin = Math.min(columnIndex, actualColumHeight);
+        int mathMin = Math.min(basedIndex, actualColumHeight);
 
-        int minimumBaseCoordDiagonal = columnIndex - mathMin ;
+        int minimumBaseCoordDiagonal = basedIndex - mathMin ;
         int maxHeightDiagonal = actualColumHeight - mathMin ;
-
 
         int[] actualIndexes = {minimumBaseCoordDiagonal, maxHeightDiagonal};
 
@@ -60,9 +60,9 @@ public class GameModeManager {
         IntStream.range(0, Math.min(line.maxBaseBounds.size() - actualIndexes[0]-1, line.maxHeightBounds.size() - actualIndexes[1]))
                 .forEach(i -> capaDeNivelC.add(line.getToken(actualIndexes[0] + i, actualIndexes[1] + i)));
 
-        line.checkWinInList(capaDeNivelC);
+        line.checkWinInList(capaDeNivelC, actualColumHeight);
 
-        int[] actualIndexes2 = {columnIndex, actualColumHeight};
+        int[] actualIndexes2 = {basedIndex, actualColumHeight};
 
         IntStream.iterate(0, i -> actualIndexes2[1] > 0 && actualIndexes2[0] < line.maxHeightBounds.size() - 2, i -> i + 1)
                 .forEach(i -> {
@@ -78,6 +78,6 @@ public class GameModeManager {
                     actualIndexes2[1]++;
                 });
 
-        line.checkWinInList(levelLayerDiagonal);
+        line.checkWinInList(levelLayerDiagonal, actualColumHeight);
     }
 }
