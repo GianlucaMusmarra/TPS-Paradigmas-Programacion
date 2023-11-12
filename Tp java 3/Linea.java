@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Linea {
@@ -14,8 +13,7 @@ public class Linea {
     public char red = 'x';
     public char blue = 'o';
 
-    public char gameMode;
-    public LinkedList<GameMode> allGameModes = new LinkedList<>();
+    public GameModeManager gameModeManager = new GameModeManager(this);
 
     public LinkedList<FinalResult> finalResult = new LinkedList<>();
     public String getFinalResult(){return finalResult.get(0).toString();}
@@ -28,18 +26,7 @@ public class Linea {
         maxHeightBounds.get(0).checkBoundTooSmall();
         maxBaseBounds.get(0).checkBoundTooSmall();
 
-        allGameModes.add(new GameModeA());
-        allGameModes.add(new GameModeB());
-        allGameModes.add(new GameModeC());
-
-        allGameModes = allGameModes.stream()
-                .filter(gm -> gm.isGameMode(userInputGM))
-                .collect(Collectors.toCollection(LinkedList::new));
-
-        allGameModes.addLast(new GameModeNone());
-        allGameModes.getFirst().isGameMode(userInputGM);
-
-        gameMode = userInputGM;
+        gameModeManager.SetupGameMode(userInputGM);
 
         finalResult.add(new FinalResultNone());
 
@@ -115,61 +102,7 @@ public class Linea {
         IntStream.range(0, maxBaseBounds.size()-1).filter(i -> grid.get(i).size() != maxHeightBounds.size()-1)
                 .forEach(e -> finalResult.addFirst(new FinalResultNone()));
 
-        allGameModes.get(0).checkModeWins(this, columnIndex);
-    }
-
-    public void checkAModeWin(int columnIndex){
-        checkWinInList(grid.get(columnIndex));
-
-        int verticalHeight = grid.get(columnIndex).size() - 1;
-        List<Character> levelLayer = new ArrayList<>();
-
-        IntStream.range(0, maxBaseBounds.size()-1).forEach(x -> levelLayer.add(getToken(x, verticalHeight)));
-
-        checkWinInList(levelLayer);
-    }
-
-    public void checkBModeWin(int columnIndex){
-
-        int actualColumHeight = grid.get(columnIndex).size() - 1;
-        int actualWorkBase = columnIndex;
-
-        int mathMin = Math.min(actualWorkBase, actualColumHeight);
-
-        int minimumBaseCoordDiagonal = actualWorkBase - mathMin ;
-        int maxHeightDiagonal = actualColumHeight - mathMin ;
-
-
-        int[] actualIndexes = {minimumBaseCoordDiagonal, maxHeightDiagonal};
-
-        List<Character> capaDeNivelC = new ArrayList<>();
-
-        IntStream.range(0, Math.min(maxBaseBounds.size() - actualIndexes[0]-1, maxHeightBounds.size() - actualIndexes[1]))
-                .forEach(i -> capaDeNivelC.add(getToken(actualIndexes[0] + i, actualIndexes[1] + i)));
-
-        checkWinInList(capaDeNivelC);
-
-        int actualHeightDiagonal = grid.get(columnIndex).size() - 1;
-
-
-        int[] actualIndexes2 = {columnIndex, actualHeightDiagonal};
-
-        IntStream.iterate(0, i -> actualIndexes2[1] > 0 && actualIndexes2[0] < maxHeightBounds.size() - 2, i -> i + 1)
-                .forEach(i -> {
-                    actualIndexes2[0]++;
-                    actualIndexes2[1]--;
-                });
-
-        List<Character> levelLayerDiagonal = new ArrayList<>();
-
-        IntStream.iterate(actualIndexes2[0], i -> i >= 0 && actualIndexes2[1] < maxHeightBounds.size(), i -> i - 1)
-                .forEach(i -> {
-                    levelLayerDiagonal.add(getToken(i, actualIndexes2[1]));
-
-                    actualIndexes2[1]++;
-                });
-
-        checkWinInList(levelLayerDiagonal);
+        gameModeManager.checkWinsAt(columnIndex);
     }
 
     public char getToken(int column,int indexHeight){

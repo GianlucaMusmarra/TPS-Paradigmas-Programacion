@@ -6,8 +6,8 @@ public class GameModeC extends GameMode{
     }
 
     @Override
-    public void checkModeWins(Linea linea, int columnIndex) {
-        linea.checkAModeWin(columnIndex);
-        linea.checkBModeWin(columnIndex);
+    public void checkModeWins(GameModeManager manager, int columnIndex) {
+        manager.checkAModeWin(columnIndex);
+        manager.checkBModeWin(columnIndex);
     }
 }

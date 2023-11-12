@@ -7,5 +7,5 @@ public class GameModeNone extends GameMode{
     }
 
     @Override
-    public void checkModeWins (Linea line, int columnIndex) {}
+    public void checkModeWins (GameModeManager manager, int columnIndex) {}
 }
