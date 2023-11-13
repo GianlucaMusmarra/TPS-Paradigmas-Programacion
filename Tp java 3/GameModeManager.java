@@ -39,7 +39,9 @@ public class GameModeManager {
 
         List<Character> levelLayer = new ArrayList<>();
 
+        IntStream.range(0,1).filter(e -> line.maxBaseBounds.size()-1 == 0).forEach(x -> levelLayer.add(line.getToken(x, verticalHeight)));
         IntStream.range(0, line.maxBaseBounds.size()-1).forEach(x -> levelLayer.add(line.getToken(x, verticalHeight)));
+
 
         line.checkWinInList(levelLayer, verticalHeight);
     }

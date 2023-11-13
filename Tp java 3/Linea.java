@@ -120,11 +120,12 @@ public class Linea {
         IntStream.range(0, 1).filter(n->
                 IntStream.range(-3,4).filter(
                         row -> columnIndex + row < levelLayer.size() && columnIndex + row >= 0 && levelLayer.get(row + columnIndex)
-                                .equals('x')).count() >= 4).forEach(n ->finalResult.addFirst(new FinalResultRed()));
+                                .equals(blue)).count() >= 4).forEach(n ->finalResult.addFirst(new FinalResultBlue()));
 
         IntStream.range(0, 1).filter(n->
                 IntStream.range(-3,4).filter(
                         row -> columnIndex + row < levelLayer.size() && columnIndex + row >= 0 && levelLayer.get(row + columnIndex)
-                                .equals('o')).count() >= 4).forEach(n ->finalResult.addFirst(new FinalResultBlue()));
+                                .equals(red)).count() >= 4).forEach(n ->finalResult.addFirst(new FinalResultRed()));
+
     }
 }
